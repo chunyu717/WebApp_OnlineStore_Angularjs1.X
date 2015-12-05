@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Shop Homepage - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS 
+    <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- Custom CSS 
+    <link href="css/carousel.css" rel="stylesheet">
+    <link href="css/shop-homepage.css" rel="stylesheet">  
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+  	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+    
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+   -->
+    
+    <link href="assets/bundle.css" rel="stylesheet" type="text/css" />
+    <script src="assets/bundle.js"></script>
+     
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+    <div navbar></div>
+    <!--
+	<div class="navbar-wrapper" id="Top" >
+		<div class="container ">  
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> 
+							<span class="sr-only">Toggle navigation</span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+						</button> 
+						<a class="navbar-brand" ng-href="#/" ng-bind="peripheral.title" ></a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							
+							<li><a ng-href="#/peripheral" ng-bind="peripheral.peripheral"></a></li>
+							<li><a href="" ng-click="gotoGroupBuying()" ng-bind="peripheral.groupBuying"></a></li>	
+                            <li><a href=""><span class="glyphicon glyphicon-log-in" ng-bind="peripheral.signIn" ng-click="signInOut()"></span></a></li>
+                            	
+						</ul>				
+					</div>
+				</div>
+			</nav>
+		 </div>
+	</div> 
+    -->
+
+    <!-- Page Content -->
+    <hr class="featurette-divider">      
+    <hr class="featurette-divider">  
+    
+    <div class="container-fluid ">
+        <div class="row">		
+            <div class="col-md-2 col-centered">
+                <p class="lead">商品分類</p>
+                <div class="list-group">
+                    <a href="#" class="list-group-item" ng-click="setCategory('clothes')" >時尚女裝</a>
+                    <a href="#" class="list-group-item" ng-click="setCategory('shoes')">時尚女鞋</a>
+                    <a href="#" class="list-group-item" ng-click="setCategory('accessory')">時尚配件</a>
+                </div>
+            </div>
+
+            <!-- Clothes -->
+            <div class="col-md-10" ng-init="setCategory('clothes')" ng-show="peripheral.IsClothes">
+                <div class="row"  >
+                    <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.clothesItems">
+                        <div class="thumbnail" >
+                            <img ng-src="{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" alt="" href="#" data-toggle="modal"data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <div class="caption">
+                                <h4 class="pull-right">${{ item.pricing }}</h4>
+                                <h4><a href="#">{{ item.name }}</a></h4>
+                                {{ item.short_description }}
+                            </div>
+                            <div class="ratings">
+                                <p>
+                                <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
+                                </p>
+                                <p>
+                                    <button class="btn btn-primary btn-lg" type="submit">馬上購買</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.Clothes -->
+            
+            <!-- Shoes -->
+            <div class="col-md-10" ng-show="peripheral.IsShoes">
+                <div class="row"  >
+                    <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.shoesItems">
+                        <div class="thumbnail" >
+                            <img ng-src="{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <div class="caption">
+                                <h4 class="pull-right">${{ item.pricing }}</h4>
+                                <h4><a href="#">{{ item.name }}</a></h4>
+                                {{ item.short_description }}
+                            </div>
+                            <div class="ratings">
+                                <p>
+                                <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
+                                </p>
+                                <p>
+                                    <button class="btn btn-primary btn-lg" type="submit">馬上購買</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.Shoes -->
+            
+            <!-- IsAccessory -->
+            <div class="col-md-10" ng-show="peripheral.IsAccessory">
+                <div class="row"  >
+                    <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.accessoryItems">
+                        <div class="thumbnail" >
+                            <img ng-src="{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <div class="caption">
+                                <h4 class="pull-right">${{ item.pricing }}</h4>
+                                <h4><a href="#">{{ item.name }}</a></h4>
+                                {{ item.short_description }}
+                            </div>
+                            <div class="ratings">
+                                <p>
+                                <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
+                                </p>
+                                <p>
+                                    <button class="btn btn-primary btn-lg" type="submit">馬上購買</button>
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <!-- /.IsAccessory -->
+            
+        </div>  <!-- /.row -->
+    </div> <!-- /.container -->
+
+    <div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="image-gallery-title">{{ peripheral.name }}</h4>
+                    
+                </div>
+                <div class="modal-body">
+                    <img id="image-gallery-image" class="img-responsive" src="{{ peripheral.enlargeImageUrl }}" ng-click="changeModalPic(item.icon)" >
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="text-justify" id="image-gallery-caption">
+                        {{ peripheral.long_description }}
+                    </div>  
+                    <!--
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" id="show-previous-image">Previous</button>
+                    </div>    
+                    <div class="col-md-2" style="float:right">
+                        <button type="button" id="show-next-image" class="btn btn-primary">Next</button>
+                    </div>
+                    -->
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid ">
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; CxN Website 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery 
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript 
+    <script src="js/bootstrap.min.js"></script>-->
+
+
+
+</html>

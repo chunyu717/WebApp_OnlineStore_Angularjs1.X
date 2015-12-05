@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="hosen">
+  <head>
+    <meta charset="utf-8">
+	<title >{{ main.title }}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="assets/images/favicon.png">
+	
+	<!--
+	<!--[if lt IE 9]> 
+	<script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script
+	<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script>
+	
+	
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link href="css/carousel.css" rel="stylesheet">
+	<link href="css/modal-login.css" rel="stylesheet">
+	
+	<script src="/js/ie-emulation-modes-warning.js"></script>
+  	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  	<script src="bower_components/angular-resource/angular-resource.js"></script>  
+	<link rel="stylesheet" href="assets/bundle.css">
+	
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> 
+	-->
+  	
+	
+	<link href="assets/bundle.css" rel="stylesheet" />
+    <script src="assets/bundle.js"></script>
+	
+
+	<style id="style-1-cropbar-clipper">
+		/* Copyright 2014 Evernote Corporation. All rights reserved. */
+		.en-markup-crop-options {
+			top: 18px !important;
+			left: 50% !important;
+			margin-left: -100px !important;
+			width: 200px !important;
+			border: 2px rgba(255,255,255,.38) solid !important;
+			border-radius: 4px !important;
+		}
+		
+		.en-markup-crop-options div div:first-of-type {
+			margin-left: 0px !important;
+		}
+	</style>
+  </head>
+  <!--<body ng-controller="about as ctrl" > -->
+  <body>
+
+	<div navbar></div>
+	 <!--
+	<div class="navbar-wrapper" id="Top">
+		 <div class="container "> 
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> 
+							<span class="sr-only">Toggle navigation</span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+						</button> 
+						<a class="navbar-brand" ng-href="#/" ng-bind="main.title" ></a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li><a ng-href="#/peripheral" ng-bind="main.peripheral"></a></li>				
+							<li><a href="" ng-click="gotoGroupBuying()" ng-bind="main.groupBuying"></a></li>	
+							<li><a href=""><span class="glyphicon glyphicon-log-in" ng-bind="main.signIn" ng-click="signInOut()"></span></a></li>				
+						</ul>		
+					</div>
+				</div>
+			</nav>
+		 </div> 
+	</div> 
+	-->
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class=""></li>
+			<li data-target="#myCarousel" data-slide-to="1" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="2" class=""></li>
+		</ol>
+		<div class="carousel-inner" role="listbox">
+			<div class="item"><img src="assets/images/carousel01.jpg" alt="First slide">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>專注完美 近乎苛求</h1>
+						<!--<p>營業時間：周一至周六(10:00~22:00).</p> -->
+					</div>
+				</div>
+			</div>
+			<!-- <div class="item active"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAGZmZgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide"> -->
+			<div class="item active"><img src="assets/images/carousel02.jpg" alt="Second slide">
+				<div class="carousel-caption">
+						<h1>專注完美 近乎苛求</h1>
+					</div>	
+			</div>
+			<div class="item"><img src="assets/images/carousel03.jpg" alt="Third slide">
+				<div class="carousel-caption">
+						<h1>專注完美 近乎苛求</h1>
+					</div>
+				<!--
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>One more for good measure.</h1>
+						<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+						<p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+					</div>
+				</div>
+				-->
+			</div>
+		</div>
+		
+		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> 
+		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>		
+	</div>
+	
+	<div class="container marketing">
+		<div class="row featurette">
+			<div class="col-md-6">
+				<!--<p class="featurette-heading" ng-bind="main.aboutTitle"> -->
+				<h1> {{main.aboutTitle}} </h1>	
+				<!--<p class="text-muted" ng-bind="main.aboutHosenDesc"> -->
+				<p class="lead" ng-bind="main.aboutDesc">	
+			</div>
+			<div class="col-md-6">
+			<!-- <div class="embed-responsive embed-responsive-16by9"> --> 
+				<h1> {{main.newsTitle}} </h1>	
+				<p class="lead" ng-bind-html="main.newsDesc">
+			</div>
+		</div>
+		
+		<hr class="featurette-divider">
+		
+		<div class="row featurette" id='Price' >
+			<div class="col-md-12">
+				<!--
+				<p class="featurette-heading" ng-bind="main.priceAndServiceTitle"> 
+				<p class="lead" ng-bind-html="main.priceAndServiceDesc">
+				
+				<p class="featurette-heading" ng-bind="main.openTimeTitle"> 
+				<p class="lead" ng-bind="main.openTimeDesc">
+				
+				<p class="featurette-heading" ng-bind="main.contactUS" id="ContactUS"> 
+				-->
+				<h1> {{main.contactUS}} </h1>		
+				 <!--<p class="lead" ng-bind-html="main.contactUSDesc">-->
+				<h3>facebook : <a href="https://www.facebook.com/%E5%AE%B8%E8%AA%9E-X-%E5%AF%B6%E5%8C%85-562251587238177/" target="_blank"> Cxn Boutique</a></h3>
+				<h3>Line ID : <a>CxN Boutique</a></h3>
+				<!--<p class="featurette-heading" ng-bind="main.locationTitle" id="Location"> 
+				<p class="lead" ng-bind-html="main.locationDesc">-->
+			</div>
+			<!--
+			<div class="col-md-6">
+				<img class="featurette-image img-responsive" width="480" data-src="holder.js/500x500/auto" alt="480x480" src="assets/images/title.png">
+			</div>
+			-->
+		</div>
+		
+		<!--
+		<hr class="featurette-divider">
+		<div class="row featurette" >
+			<div class="col-md-6">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d904.3463877142609!2d121.232044229221!3d24.952993814919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682247221ad027%3A0xaca762864fdb9b5b!2zMzIw5Y-w54Gj5qGD5ZyS5biC5Lit5aOi5Y2A56aP5bee6LevNTDomZ8!5e0!3m2!1szh-TW!2stw!4v1447243092192" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+			<div class="col-md-6">
+				<iframe width="400" height="300" src="https://www.youtube.com/embed/qP86dGS7ZFI" frameborder="0" allowfullscreen></iframe>
+				
+			</div>
+		</div>
+		-->
+		
+		<!--
+		<div class="col-md-5">
+			<img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="200x200" src="assets/images/angular.png" data-holder-rendered="true">
+		</div>
+		-->
+	
+	</div>
+	
+	<!-- BEGIN # MODAL LOGIN -->
+	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" align="center">
+					<img class="img-circle" id="img_logo" src="http://bootsnipp.com/img/logo.jpg">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true" ></span>
+					</button>
+				</div>
+                
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                 
+                    <!-- Begin # Login Form -->
+                    <form id="login-form" ng-submit="main.login()" ng-show="main.IsLogin">
+		                <div class="modal-body">
+				    		<div id="div-login-msg">
+                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-login-msg" ng-bind="main.loginMsg"></span>
+                            </div>
+				    		<input id="login_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required ng-model="main.username">
+				    		<input id="login_password" class="form-control" type="password" placeholder="Password" required ng-model="main.password">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Remember me
+                                </label>
+                            </div>
+        		    	</div>
+				        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Login</button>
+                            </div>
+				    	    <div>
+                                <button id="login_lost_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLost')">Lost Password?</button>
+                                <button id="login_register_btn" type="button" class="btn btn-link" data-dismiss="modal" ng-click="setModalForm('IsRegister')">Register</button>
+                            </div>
+				        </div>
+                    </form>
+                    <!-- End # Login Form -->
+                    
+                    <!-- Begin | Lost Password Form -->
+
+                    <form id="lost-form" ng-show="main.IsLost">
+    	    		    <div class="modal-body">
+		    				<div id="div-lost-msg">
+                                <div id="icon-lost-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-lost-msg" ng-bind="main.loginMsg"></span>
+                            </div>
+		    				<input id="lost_email" class="form-control" type="text" placeholder="E-Mail (type ERROR for error effect)" required>
+            			</div>
+		    		    <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Send</button>
+                            </div>
+                            <div>
+                                <button id="lost_login_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLogin')">Log In</button>
+                                <button id="lost_register_btn" type="button" class="btn btn-link" data-dismiss="modal" ng-click="setModalForm('IsRegister')">Register</button>
+                            </div>
+		    		    </div>
+                    </form>
+
+                    <!-- End | Lost Password Form -->
+                    
+                    <!-- Begin | Register Form -->
+					<!--
+                    <form id="register-form" ng-show="main.IsRegister">
+            		    <div class="modal-body">
+		    				<div id="div-register-msg">
+                                <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-register-msg" ng-bind="main.loginMsg"></span>
+                            </div>
+		    				<input id="register_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required>
+                            <input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>
+                            <input id="register_password" class="form-control" type="password" placeholder="Password" required>
+            			</div>
+		    		    <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                            </div>
+                            <div>
+                                <button id="register_login_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLogin')">Log In</button>
+                                <button id="register_lost_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLost')">Lost Password?</button>
+                            </div>
+		    		    </div>
+                    </form>
+					-->
+                    <!-- End | Register Form -->
+                    
+                </div>
+                <!-- End # DIV Form -->
+                
+			</div>
+		</div>
+	</div>
+    <!-- END # MODAL LOGIN -->
+	
+	<div class="container-fluid ">
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; CxN Website 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+	<!--
+	<!-- jQuery (Bootstrap 所有外掛均需要使用) -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+    <!-- 依需要參考已編譯外掛版本（如下），或各自獨立的外掛版本 -->
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+  </body>
+</html>
+					
+					
