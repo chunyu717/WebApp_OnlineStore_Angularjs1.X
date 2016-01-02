@@ -1,4 +1,5 @@
-'use strict';
+(function() {
+  'use strict';
 /**
  * @ngdoc function
  * @name hosen.controller:groupbuyingCtrl
@@ -10,3 +11,4 @@ angular.module('hosen')
   .controller('groupbuyingCtrl', function ($scope) {
     
   });
+})();

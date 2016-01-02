@@ -22,7 +22,6 @@
     vm.priceAndServiceTitle  = '服務項目' ;
     vm.locationTitle = "交通指南" ;
     vm.contactUS = "聯絡我們"; 
-    //vm.isSignIn = false;
     
     vm.aboutTitle = '關於CxN Boutique' ;
     vm.aboutDesc = '為2007年創立的一家台灣網路郵購服飾品牌，其以UNIQLO的廉價時尚為構想，同時設計符合台灣副熱帶氣候的衣服，並加入多樣化圖案元素，而且由網路購物發跡，非實體店面。2016年營業額為臺灣網路服飾品牌第一，名稱CxN Boutique由來為創辦人Celia與Nina的縮寫';
@@ -34,10 +33,8 @@
     vm.openTimeDesc = '周一至周六(10:00~22:00)' ; 
     vm.locationDesc = "地址：中壢市環中東路685巷85弄11號<br>經緯度：24°57\'16.5\"N 121°13\'57.2\"E";
     vm.facebook_url='https://www.facebook.com/pages/%E5%AE%8F%E6%98%87%E7%9B%B2%E4%BA%BA%E6%8C%89%E6%91%A9/477649398913384';
-    
     vm.contactUSDesc = "<h3>facebook : <a>https://www.facebook.com/%E5%AE%B8%E8%AA%9E-X-%E5%AF%B6%E5%8C%85-562251587238177/</a></h3><h3>Line ID : <a>CxxN</a></h3>" ; 
-      
-    //vm.IsLogin = false;
+     
 
     $rootScope.$watch('globals', function(newVal, oldVal) {
             vm.IsLogin = ($rootScope.globals.currentUser);
@@ -70,7 +67,7 @@
           });
           
        }
-    }
+    };
     
     $scope.gotoGroupBuying = function() {
         if(vm.IsLogin){
@@ -78,7 +75,7 @@
         } else {
           $location.url('/signin');
         }
-    } 
+    };
       
     $scope.gotoTop = function() {
       // set the location.hash to the id of
@@ -124,7 +121,7 @@
       // call $anchorScroll()
       $anchorScroll();
     };
-
+    
   }])
   .directive('navbar', function() {
     return {

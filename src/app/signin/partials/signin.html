@@ -10,25 +10,36 @@
 		<meta name="author" content="">
 		<link rel="icon" href="favicon.ico">
 		<title>Signin</title>
-
-		<!--
-		<link href="css/signin.css" rel="stylesheet">
-		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></script>
-		-->
-		<!--[if lt IE 9]><script src=~/Scripts/AssetsBS3/ie8-responsive-file-warning.js></script><![endif]
-		<script src="js/ie-emulation-modes-warning.js"></script> -->
-		<!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script>
-		<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
 	
 		<link href="assets/bundle.css" rel="stylesheet" type="text/css" />
    		<script src="assets/bundle.js"></script>
-
-		<!--
-			<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-			<script type="text/javascript" src="bower_components/angular-re-captcha/angular-re-captcha.js"></script>
-		<script src="bower_components/jquery/dist/jquery.min.js"></script>
-  		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-		  -->
+		   
+		 <!--
+		<script src="//www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded" async defer></script>
+		<script src="assets/angular-recaptcha.js"></script>
+		 -->
+		 
+		<!--  <script type="text/javascript" src="bower_components/angular-re-captcha/angular-re-captcha.js"></script>	-->
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<!-- <script type="text/javascript" src="angular-recaptcha.js"></script> -->
+		
+		<script type="text/javascript">
+			var setCaptchaSuccess = function(response) {
+				document.getElementById("loginBtn").disabled = false;
+	
+			};
+			var resetCaptcha = function(response) {
+				document.getElementById("loginBtn").disabled = true;
+			};
+			var setCaptchaSuccess2 = function(response) {
+				document.getElementById("registerBtn").disabled = false;
+	
+			};
+			var resetCaptcha2 = function(response) {
+				document.getElementById("registerBtn").disabled = true;
+			};
+		</script>
+		
 
 		<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
 			.en-markup-crop-options {
@@ -45,148 +56,102 @@
 			}
 		</style>
 	</head>
-	
-	<div class="container">
-			<div align="center">
-				<font size="50"> <a ng-href="#/" ng-bind="signin.title"></a></font>
-			</div>
-			
-			<form id= "signinForm" class="form-signin" role="form" ng-submit="logIn()" ng-show="signin.IsSignin">
-				<h2 class="form-signin-heading" >登入</h2>
-				
-				<label for="inputAccount">
-						帳號
-				</label> 
-				<!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" ng-model="account"> -->
-				<input type="text" name="account" id="account" class="form-control" placeholder="Account" ng-model="signin.account" required />
-				<label for="inputPassword">
-					 	密碼
-				</label> 
-				<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" ng-model="signin.password">
-				<!--
-				<div class="form-group">
-                    <label>Captcha*</label>
-                    <div re-captcha ng-model="signin.captcha"></div>
-                </div>
-				-->
-				<div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
-				<div class="form-actions">
-					<button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="signinForm.$invalid">登入</button>
-					<a href="" class="btn btn-link" ng-click="signin.IsSignin = false ; signin.error = false">註冊會員</a>
-				</div>
-			</form>
-			
-			
-			<!-- Begin | Register Form -->
-			<form  id= "registerForm" class="form-signin" role="form" ng-submit="register()" ng-hide="signin.IsSignin">
-				<h2 class="form-signin-heading" >註冊會員</h2>
-				
-				
-				<label for="inputAccount">
-						帳號
-				</label> 
-				<input type="text" name="account" id="inputAccount" class="form-control" placeholder="account" required ng-model="signin.account" />
-				
-				<label for="inputPassword">
-					 	密碼
-				</label> 
-				<input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="signin.password">
-				
-				<label for="inputPassword2">
-					 	重新輸入密碼
-				</label> 
-				<input type="password" id="inputPassword2" class="form-control" placeholder="Retype Password" required ng-model="signin.password2">
-				
-				<label for="inputUsername">
-						姓名
-				</label> 
-				<input type="text" id="inputUsername" class="form-control" placeholder="User Name" required ng-model="signin.username" />
-				
-				<div ng-init="signin.gender = 'female'"> 
-					<input type="radio" ng-model="signin.gender" value="male" /> 先生
-					<input type="radio" ng-model="signin.gender" value="female" /> 女士
-				</div>
-				
-				<label for="inputPhone">
-						電話
-				</label> 
-				<input type="text" name="phone" id="inputPhone" class="form-control" placeholder="Mobile Number" required ng-model="signin.phone" />
-				
-				<label for="inputAddress">
-						地址
-				</label> 
-				<input type="text" name="address" id="inputAddress" class="form-control" placeholder="Address" ng-model="signin.address" />
-				
-				<label for="inputEmail">
-						電子郵件
-				</label> 
-				<input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="signin.email">
-				
-				<label for="inputComment">
-						備註<p>
-				</label> 
-				
-				<textarea rows="4" cols="35" name="comment" form="registerForm" id="inputComment" > </textarea>
-				
-				<div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
-				<div class="form-actions">
-					<button class="btn btn-lg btn-primary btn-block" type="submit">加入會員</button>
-					<a href="" class="btn btn-link" ng-click="signin.IsSignin = true ; signin.error = false">登入</a>
-				</div>
-				
-				
-				
-			</form>
-	 
-			 <!-- End | Register Form -->
-			 
-			 <!-- Begin | Register Form -->
-				<!--
-				<form id="register-form" ng-show="main.IsRegister">
-					<div class="modal-body">
-						<div id="div-register-msg">
-							<div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>
-							<span id="text-register-msg" ng-bind="main.loginMsg"></span>
-						</div>
-						<input id="register_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required>
-						<input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>
-						<input id="register_password" class="form-control" type="password" placeholder="Password" required>
-					</div>
-					<div class="modal-footer">
-						<div>
-							<button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
-						</div>
-						<div>
-							<button id="register_login_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLogin')">Log In</button>
-							<button id="register_lost_btn" type="button" class="btn btn-link" ng-click="setModalForm('IsLost')">Lost Password?</button>
-						</div>
-					</div>
-				</form>
-				-->
-				<!-- End | Register Form -->
-					
-			<!--
-			<form name="form" ng-submit="signin.login()" role="form">
-				<h2>Login</h2>
-				<div ng-show="signin.error" class="alert alert-danger">{{vm.error}}</div>
-				<div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
-					<label for="username">Username</label>
-					<input type="text" name="username" id="username" class="form-control" ng-model="signin.username" required />
-					<span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
-				</div>
-				<div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
-					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="form-control" ng-model="signin.password" required />
-					<span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
-				</div>
-				<div class="form-actions">
-					<button type="submit" ng-disabled="form.$invalid || signin.dataLoading" class="btn btn-primary">Login</button>
-					<img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-					<a href="#/register" class="btn btn-link">Register</a>
-				</div>
-			</form>
-			-->
-	</div>
+    
+    <div navbar></div>
+    
+	<div class="intro-header">
+        <div class="container">
+            <div class="container">
+                    <div align="center">
+                        <font size="50"> <a ng-href="#/" ng-bind="signin.title"></a></font>
+                    </div>
+                    
+                    <form name="signinForm" id= "signinForm" class="form-signin" role="form" ng-submit="logIn()" ng-show="signin.IsSignin">
+                        <h2 class="form-signin-heading" >登入</h2>
+                        
+                        <label for="inputAccount">
+                                帳號
+                        </label> 
+                        <!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" ng-model="account"> -->
+                        <input type="text" name="account" id="account" class="form-control" placeholder="Account" ng-model="signin.account" required />
+                        <label for="inputPassword">
+                                密碼
+                        </label> 
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="signin.password" required>
+                        
+                        <div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
+                        
+                        <div id="recaptcha1" class="g-recaptcha" data-sitekey="6Ld9yhMTAAAAANeyP2PcAFgPPgtRUhMbte8_vnOp" data-callback="setCaptchaSuccess" data-expired-callback="resetCaptcha"></div>
+                        
+                        <!-- <div class="form-actions">-->
+                        <button id="loginBtn" class="btn btn-lg btn-primary btn-block" type="submit" disabled="true" >登入</button>
+                        
+                        <a href="" class="btn btn-link" ng-click="signin.IsSignin = false ; signin.error = false">註冊會員</a>
+                    </form>
+                    
+                    
+                    <!-- Begin | Register Form -->
+                    <form name="registerForm" id= "registerForm" class="form-signin" role="form" ng-submit="register()" ng-hide="signin.IsSignin">
+                        <h2 class="form-signin-heading" >註冊會員</h2>
+                        
+                        <label for="inputAccount">
+                                帳號
+                        </label> 
+                        <input type="text" name="account" id="inputAccount" class="form-control" placeholder="account" required ng-model="signin.account" />
+                        
+                        <label for="inputPassword">
+                                密碼
+                        </label> 
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="signin.password">
+                        
+                        <label for="inputPassword2">
+                                重新輸入密碼
+                        </label> 
+                        <input type="password" id="inputPassword2" class="form-control" placeholder="Retype Password" required ng-model="signin.password2">
+                        
+                        <label for="inputUsername">
+                                姓名
+                        </label> 
+                        <input type="text" id="inputUsername" class="form-control" placeholder="User Name" required ng-model="signin.username" />
+                        
+                        <div ng-init="signin.gender = 'female'"> 
+                            <input type="radio" ng-model="signin.gender" value="male" /> 先生
+                            <input type="radio" ng-model="signin.gender" value="female" /> 女士
+                        </div>
+                        
+                        <label for="inputPhone">
+                                電話
+                        </label> 
+                        <input type="text" name="phone" id="inputPhone" class="form-control" placeholder="Mobile Number" required ng-model="signin.phone" />
+                        
+                        <label for="inputAddress">
+                                地址
+                        </label> 
+                        <input type="text" name="address" id="inputAddress" class="form-control" placeholder="Address" ng-model="signin.address" />
+                        
+                        <label for="inputEmail">
+                                電子郵件
+                        </label> 
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="signin.email">
+                        
+                        <label for="inputComment">
+                                備註<p>
+                        </label> 
+                        
+                        <textarea rows="4" cols="35" name="comment" form="registerForm" id="inputComment" > </textarea>
+                        
+                        <div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
+                        
+                        <div id="recaptcha2" class="g-recaptcha" data-theme="dark" data-sitekey="6Ld9yhMTAAAAANeyP2PcAFgPPgtRUhMbte8_vnOp" data-callback="setCaptchaSuccess2" data-expired-callback="resetCaptcha2" ></div>
+                        
+                        <button id="registerBtn" class="btn btn-lg btn-primary btn-block" type="submit">加入會員</button>
+                        <a href="" class="btn btn-link" ng-click="signin.IsSignin = true ; signin.error = false">登入</a>
+                            
+                    </form>
+                <!-- End | Register Form -->
+            </div>
+        </div>
+    </div>
 	
 </html>
 		

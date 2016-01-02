@@ -14,7 +14,7 @@
  
         return service;
  
-        function Login(username, password, callback) {
+        function Login(account, password, callback) {
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
              /*s
@@ -38,7 +38,7 @@
                     //url: 'http://cxn.com.tw:8888/api/authenticate', //cxnurl + '/api/authenticate',
                     url: 'http://122.116.108.112:8888/api/authenticate',
                     method: "POST",
-                    params: { username: username, password: password },
+                    params: { username: account, password: Base64.encode(password) },
                     withCredentials: true,
                     
                     headers: {

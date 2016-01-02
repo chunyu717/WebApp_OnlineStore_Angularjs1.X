@@ -1,4 +1,5 @@
-'use strict';
+(function() {
+  'use strict';
 describe('Controller: groupbuyingCtrl', function () {
 // load the controller's module
   beforeEach(module('hosen'));
@@ -15,3 +16,4 @@ describe('Controller: groupbuyingCtrl', function () {
     expect(scope.awesomeThings.length).toBe(3);
   });
 });
+})();

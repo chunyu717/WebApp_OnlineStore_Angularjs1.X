@@ -1,4 +1,5 @@
-'use strict';
+(function() {
+  'use strict';
 describe('Controller: peripheralCtrl', function () {
 // load the controller's module
   beforeEach(module('hosen'));
@@ -18,3 +19,4 @@ describe('Controller: peripheralCtrl', function () {
   });
   */
 });
+})();

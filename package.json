@@ -2,6 +2,7 @@
   "name": "hosen",
   "version": "0.0.0",
   "dependencies": {
+    "angular-recaptcha": "^2.2.5",
     "express": "^4.13.3"
   },
   "scripts": {
