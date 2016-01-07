@@ -37,9 +37,9 @@
                 <div class="row"  >
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.clothesItems">
                         <div class="thumbnail" >
-                            <!--<img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" href="#/product" > -->
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" href="#image-gallery" data-toggle="modal" data-target="#image-gallery"  
-                            ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}', '{{item.name}}' )"> 
+                            <!-- <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" ng-click="redirectProduct('{{item.id}}')" > -->
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" href="#image-gallery" data-toggle="modal" data-target="#image-gallery" 
+                            ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}', '{{item.name}}' )">  
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>

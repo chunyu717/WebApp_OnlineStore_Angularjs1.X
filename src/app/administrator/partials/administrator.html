@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="hosen" class="ng-scope">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="favicon.ico">
+        
+        <script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+
+		<link href="assets/bundle.css" rel="stylesheet" type="text/css" />
+   		<script src="assets/bundle.js"></script>
+		
+		<style>/* Copyright 2014 Evernote Corporation. All rights reserved. */
+            body {
+                margin:0;
+                padding:0;
+                -moz-background-size: cover;
+                background-size: cover;
+            }	
+            
+            .thumb {
+                width: 24px;
+                height: 24px;
+                float: none;
+                position: relative;
+                top: 10px;
+            }
+
+            form .progress {
+                line-height: 15px;
+            }
+
+            .progress {
+                display: inline-block;
+                width: 100px;
+                border: 3px groove #CCC;
+            }
+
+            .progress div {
+                font-size: smaller;
+                background: orange;
+                width: 0;
+            }
+            /*
+            .modal-content {
+                position: relative;
+                background-color: #fff;
+                border: 1px solid #999;
+                border: 1px solid rgba(0,0,0,0.2);
+                border-radius: 6px;
+                outline: 0;
+                -webkit-box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+                box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+                background-clip: padding-box;
+                width: 900px; 
+                margin: 50px 0 0 -150px; 
+            }
+            */
+		</style>
+	</head>
+    
+    <div navbar></div>
+    <br>
+    <br>
+    <br>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home" ng-click="getProducts()">商品管理</a></li>
+        <li><a data-toggle="tab" href="#menu1" ng-click="getMembers()">會員管理</a></li>
+        <li><a data-toggle="tab" href="#menu2" ng-click="getApplies()">待批準會員申請</a></li>
+    </ul>
+
+    <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+        <br>
+        <!-- 
+        <button class="btn btn-lg btn-primary btn-block" style="WIDTH: 100px; HEIGHT: 45px" alt="" href="#" 
+        data-toggle="modal" data-target="#addProduct">新增商品</button> -->
+        <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.addProductMsg = null ; administrator.addProduct = null;"/>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>商品代碼</th>
+                <th>點擊數</th>
+                <th>商品名稱</th>
+                <th>價格</th>
+                <th>圖片</th>
+                <th>商品描述(短)</th>
+                <th>商品描述(長)</th>
+                <th>類別</th>
+                <th>上架時間</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in administrator.allProducts">
+                <!-- <td><input type="checkbox" ng-model="administrator.selected"></td> -->
+                <td>{{item.id}}</td>
+                <td>{{item.rating_count}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.pricing}}</td>
+                <td>
+                    <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100px;height:80px" alt="No Image" >
+                 </td>
+                <td>{{item.short_description}}</td>
+                <td>{{item.long_description}}</td>
+                <td>{{item.category}}</td>
+                <td>{{item.created_at}}</td>
+                <td>
+                    <input type="button" value="移除" class="btn btn-primary" ng-click="removeProduct({{item.id}})"/>
+                    <input type="button" value="修改" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" ng-click="administrator.updateProductMsg = null ; administrator.updateProduct = item;"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="menu1" class="tab-pane fade">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in administrator.members">
+                <td>{{item.username}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.password}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+        <h3>Menu 2</h3>
+        <p>Some content in menu 2.</p>
+    </div>
+    </div>
+    
+    
+    <div class="modal" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addProduct-title">新增商品</h4>
+                </div>
+                <div class="modal-body">
+                     <form name="myForm" id="myForm" role="form" >
+                        <label for="userName">
+                                        商品名稱　:
+                        </label> 
+                        <input type="text" name="userName" ng-model="administrator.addProduct.name" size="28" required>
+                        <br>
+                        <label for="pricing">
+                                        價格　　　:
+                        </label> 
+                        <input type="number" min="1" max="100000" name="pricing" ng-model="administrator.addProduct.pricing" size="30" required>
+                        <br>
+                        <label for="category">
+                                        類別　　　:
+                        </label>
+                        
+                        <select name="category" form="myForm" id="category" ng-model="administrator.addProduct.category" required>
+                            <option value="clothes">clothes</option> 
+                            <option value="shoes">shoes</option> 
+                            <option value="accessory">accessory</option>
+                        </select><br>
+                        
+                        <label for="short_description">
+                                        商品描述(短)　:
+                        </label>
+                        <br>
+                        <textarea rows="2" cols="30" name="short_description"  id="short_description" ng-model="administrator.addProduct.short_description" novalidate> </textarea>
+                        <br>
+                        <label for="long_description">
+                                        商品描述(長)　:
+                        </label>
+                        <br>
+                        <textarea rows="4" cols="30" name="long_description" id="long_description" ng-model="administrator.addProduct.long_description" novalidate> </textarea>
+                        <br>
+                        
+                        <input type="file" ngf-select ng-model="administrator.picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFiles">
+                            <!-- <i ng-show="myForm.file.$error.required">*required</i><br> 
+                            <i ng-show="myForm.file.$error.maxSize">File too large {{errorFiles[0].size / 1000000|number:1}}MB: max 2M</i>-->
+                        <!--
+                        <div>
+                            <img ng-show="myForm.file.$valid" ngf-thumbnail="administrator.picFile" class="thumb"> 
+                            <button ng-click="administrator.picFile = null" ng-show="administrator.picFile">Remove</button>
+                             <span class="progress" ng-show="administrator.picFile.progress >= 0">
+                                <div style="width:{{administrator.picFile.progress}}%" ng-bind="administrator.picFile.progress + '%'"> </div>
+                            </span>
+                        </div>
+                        <br>
+                        -->
+                        <span class="progress" ng-show="administrator.picFile.progress >= 0">
+                                <div style="width:{{administrator.picFile.progress}}%" ng-bind="administrator.picFile.progress + '%'"> </div>  
+                        </span>
+                        <!--
+                        <i ng-show="myForm.file.$error.maxSize">File too large {{errorFiles[0].size / 1000000|number:1}}MB: max 2M</i>
+                          <span ng-show="administrator.picFile.result">Upload Successful</span> 
+                        <span class="err" ng-show="errorMsg">{{administrator.errorMsg}}</span>
+                        <br>
+                        -->
+                        <button type="submit" ng-click="addProduct(administrator.picFile)">新增商品</button>
+                        <p >{{administrator.addProductMsg}}</p>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <iv class="modal" id="updateProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="updateProduct-title">修改商品</h4>
+                </div>
+                <div class="modal-body">
+                     <form name="myForm" id="myForm" role="form" ng-submit="updateProduct()">
+                        <label for="userName">
+                                        商品名稱　:
+                        </label> 
+                        <input type="text" name="userName" ng-model="administrator.updateProduct.name" size="30" required>
+                        <br>
+                        <label for="pricing">
+                                        價格　　　:
+                        </label> 
+                        <input type="number" min="1" max="100000" name="pricing" ng-model="administrator.updateProduct.pricing" size="30" required>
+                        <br>
+                        <label for="category">
+                                        類別　　　:
+                        </label>
+
+                        <select name="category" form="myForm" id="category" ng-model="administrator.updateProduct.category" required>
+                            <option value="clothes">clothes</option> 
+                            <option value="shoes">shoes</option> 
+                            <option value="accessory">accessory</option>
+                        </select><br>
+                        
+                        <label for="short_description">
+                                        商品描述(短)　:
+                        </label>
+                        <br>
+                        <textarea rows="2" cols="30" name="short_description" form="myForm" id="short_description" ng-model="administrator.updateProduct.short_description" novalidate> </textarea>
+                        <br>
+                        <label for="long_description">
+                                        商品描述(長)　:
+                        </label>
+                        <br>
+                        <textarea rows="4" cols="30" name="long_description" form="myForm" id="long_description" ng-model="administrator.updateProduct.long_description" novalidate> </textarea>
+                        <br>
+                        <button type="submit">修改商品</button>
+                        <p >{{administrator.updateProductMsg}}</p>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</html>
+		

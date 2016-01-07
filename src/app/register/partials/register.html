@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="hosen" class="ng-scope">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<title>Signin</title>
+		
+		<meta name="author" content="">
+		<link rel="icon" href="favicon.ico">
+		<title>Signin</title>
+	
+		<link href="assets/bundle.css" rel="stylesheet" type="text/css" />
+   		<script src="assets/bundle.js"></script>
+		   
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+		
+		<script type="text/javascript">
+			
+			var setCaptchaSuccess = function(response) {
+				document.getElementById("registerBtn").disabled = false;
+	
+			};
+			var resetCaptcha = function(response) {
+				document.getElementById("registerBtn").disabled = true;
+			};
+		</script>
+		
+
+		<style>/* Copyright 2014 Evernote Corporation. All rights reserved. */
+            body {
+                margin:0;
+                padding:0;
+                color: #f8f8f8;
+                background: url(../assets/images/intro-bg.jpg) center center fixed no-repeat;
+                -moz-background-size: cover;
+                background-size: cover;
+            }	
+		</style>
+	</head>
+    
+    <div navbar></div>
+   
+    <div class="container">
+            <br>
+            <br>
+            <br>
+
+            <form name="registerForm" id= "registerForm" class="form-signin" role="form" ng-submit="register()" >
+                <h2 class="form-signin-heading" >註冊會員</h2>
+                
+                <label for="inputAccount">
+                        帳號
+                </label> 
+                <input type="text" name="account" id="inputAccount" class="form-control" placeholder="account" required ng-model="signin.account" />
+                
+                <label for="inputPassword">
+                        密碼
+                </label> 
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="signin.password">
+                
+                <label for="inputPassword2">
+                        重新輸入密碼
+                </label> 
+                <input type="password" id="inputPassword2" class="form-control" placeholder="Retype Password" required ng-model="signin.password2">
+                
+                <label for="inputUsername">
+                        姓名
+                </label> 
+                <input type="text" id="inputUsername" class="form-control" placeholder="User Name" required ng-model="signin.username" />
+                
+                <div ng-init="signin.gender = 'female'"> 
+                    <input type="radio" ng-model="signin.gender" value="male" /> 先生
+                    <input type="radio" ng-model="signin.gender" value="female" /> 女士
+                </div>
+                
+                <label for="inputPhone">
+                        電話
+                </label> 
+                <input type="text" name="phone" id="inputPhone" class="form-control" placeholder="Mobile Number" required ng-model="signin.phone" />
+                
+                <label for="inputAddress">
+                        地址
+                </label> 
+                <input type="text" name="address" id="inputAddress" class="form-control" placeholder="Address" ng-model="signin.address" />
+                
+                <label for="inputEmail">
+                        電子郵件
+                </label> 
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="signin.email">
+                
+                <label for="inputComment">
+                        備註<p>
+                </label> 
+                
+                <textarea rows="4" cols="35" name="comment" form="registerForm" id="inputComment" > </textarea>
+                
+                <div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
+                
+                <div id="recaptcha2" class="g-recaptcha" data-theme="dark" data-sitekey="6Ld9yhMTAAAAANeyP2PcAFgPPgtRUhMbte8_vnOp" data-callback="setCaptchaSuccess" data-expired-callback="resetCaptcha" ></div>
+                
+                <button id="registerBtn" class="btn btn-lg btn-primary btn-block" type="submit" disabled="true">加入會員</button>
+    
+            </form>
+    </div>
+</html>
+		

@@ -2,15 +2,16 @@
   'use strict';
 /**
  * @ngdoc function
- * @name hosen.controller:signinCtrl
+ * @name hosen.controller:registerCtrl
  * @description
- * # signinCtrl
+ * # registerCtrl
  * Controller of the hosen
  */
 angular.module('hosen')
-  .controller('signinCtrl', ['$scope', '$location', '$anchorScroll', '$http', 'AuthenticationService',
+  //.controller('registerCtrl', function ($scope) {
+   .controller('registerCtrl', ['$scope', '$location', '$anchorScroll', '$http', 'AuthenticationService' ,
   
-  function ($scope, $location, $anchorScroll,$http , AuthenticationService ) {
+  function ($scope, $location, $anchorScroll, $http, AuthenticationService) {
     
     $scope.navbar = {
       title: "CxN Boutique",
@@ -29,7 +30,7 @@ angular.module('hosen')
    
     (function initController() {
         // reset login status
-        AuthenticationService.ClearCredentials();
+       
          
     })();
 
@@ -67,7 +68,7 @@ angular.module('hosen')
         } else {
           $location.url('/signin');
         }
-    };
+    };   
   
   }]);
  })();

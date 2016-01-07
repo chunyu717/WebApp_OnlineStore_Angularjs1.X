@@ -11,14 +11,14 @@
       title: "CxN Boutique",
       peripheral : '最新商品',
       groupBuying : '會員團購專區',
-      signIn : '登入' 
+      signIn : '登入',
+      registerTitle : '加入會員' 
     };
     
     var vm = this;
 
   
     vm.newsTitle = '最新消息' ;
-    vm.register = '註冊' ;
     vm.priceAndServiceTitle  = '服務項目' ;
     vm.locationTitle = "交通指南" ;
     vm.contactUS = "聯絡我們"; 
@@ -45,6 +45,7 @@
             }
     }, true);      
     
+    
     $scope.signInOut = function() {
        if(!vm.IsLogin){
           $location.url('/signin');
@@ -65,9 +66,13 @@
           }).error(function(error) {
               console.log('Error: ' + error);
           });
-          
        }
     };
+    
+    $scope.register = function() {
+       $location.url('/register');
+    };
+    
     
     $scope.gotoGroupBuying = function() {
         if(vm.IsLogin){
@@ -125,7 +130,36 @@
   }])
   .directive('navbar', function() {
     return {
-      templateUrl: 'navbar.html'
+      templateUrl: 'navbar.html' /*,
+      link: function($scope, $element,$attrs){
+            $scope.signInOut = function() {
+            if(!vm.IsLogin){
+                $location.url('/signin');
+            }
+            else{
+                AuthenticationService.ClearCredentials();
+                $http({
+                        //url: 'http://cxn.com.tw:8888/api/logout',
+                        url: 'http://122.116.108.112:8888/api/logout',
+                        method: "POST",
+                        withCredentials: true,
+                        headers: {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                        }
+                }).success(function (response) {   
+                    console.log('response = ' + response) ;
+                    //vm.clothesItems = response;
+                }).error(function(error) {
+                    console.log('Error: ' + error);
+                });
+            }
+            };
+
+            $scope.register = function() {
+            $location.url('/register');
+            };
+        
+      }*/
     };
   });
 })();

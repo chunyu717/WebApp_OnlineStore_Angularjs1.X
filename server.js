@@ -3,9 +3,6 @@ var express = require('express');
 var app = express();
 var server = http.createServer(app);
 
-
-
-
 app.use(express.static('dist'));
 
 
@@ -17,6 +14,41 @@ app.use(session({
   activeDuration: 5 * 60 * 1000,
 }));
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+
+var multer  = require('multer'); 
+//var upload = multer({ dest: 'src/assets/images' });
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'src/assets/images')
+    },
+    filename: function (req, file, cb) {
+		var ext = require('path').extname(file.originalname);
+		ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
+  }
+})
+
+var upload = multer({ 
+	storage: storage
+	/*
+	dest: 'src/assets/images',
+	onFileUploadData: function (file, data, req, res) {
+		
+	},
+	onFileUploadComplete: function (file, req, res) {
+	  var fileimage = file.name;
+	  req.middlewareStorage = {
+		fileimage : fileimage//,
+		//otherKey : otherValue
+	  }
+	}
+	*/
+ }).single('file')
 
 app.all('*', function(req, res,next) {
 
@@ -26,7 +58,6 @@ app.all('*', function(req, res,next) {
         "AccessControlAllowMethods": "POST, GET, PUT, DELETE, OPTIONS",
         "AccessControlAllowCredentials": true
     };
-
 
     res.header("Access-Control-Allow-Credentials", responseSettings.AccessControlAllowCredentials);
     res.header("Access-Control-Allow-Origin",  responseSettings.AccessControlAllowOrigin);
@@ -44,6 +75,27 @@ app.all('*', function(req, res,next) {
 
 
 });
+
+
+//app.post('/api/photo/upload', upload.single('avatar'), function (req, res, next) {
+app.post('/api/photo/upload', function (req, res, next) {
+	//console.log('check!');
+	//var fileimage = req.middlewareStorage.fileimage;
+	upload(req, res, function (err) {
+		//console.log('fileimage=' + req.file.filename);
+		if (err) {
+		  // An error occurred when uploading
+		  return res.status(500).json({ success: false, data: err});
+		  
+		}
+		res.json({ success: true, fileimage : req.file.filename }) ; 
+		// Everything went fine
+	  })
+  
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+})
+
 
 app.post('/api/authenticate',function(request, response){ 
     var pg = require('pg');
@@ -79,6 +131,116 @@ app.post('/api/authenticate',function(request, response){
 		  });
 	});
 });
+
+
+app.post('/api/removeProduct',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+		var productId =   request.query.productId ;
+		//console.log('productId=' + productId);
+		
+		var results = [];
+		client.query("DELETE FROM products WHERE id=($1)", [productId], function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			response.json({ success: true, update : 'ok' }) ; 
+
+		  });
+	});
+});
+
+app.post('/api/addProduct',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	
+	var name =   request.body.name ;
+	var pricing =   request.body.pricing ;
+	var icon =   request.body.icon ;
+	var category =   request.body.category ;
+	var short_description =   request.body.short_description ;
+	var long_description =   request.body.long_description ;
+	var icon =   request.body.fileimage ;
+	
+	var created_at = new Date();
+	
+	//console.log('resp.data.fileimage=' + fileimage);
+	//console.log('category=' + category);
+	//console.log('created_at=' + created_at);
+	
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+	  //client.query('SELECT $1::int AS number', ['1'], function(err, result) {
+		
+		var results = [];
+		client.query("INSERT INTO products(name, pricing, icon, category, short_description, long_description, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7)", [name,pricing,icon,category,short_description,long_description,created_at], function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			response.json({ success: true, insert : 'ok' }) ; 
+
+		  });
+	});
+});
+
+app.post('/api/updateProduct',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	
+	var id =   request.body.id ;
+	var name =   request.body.name ;
+	var pricing =   request.body.pricing ;
+	var category =   request.body.category ;
+	var short_description =   request.body.short_description ;
+	var long_description =   request.body.long_description ;
+	
+	var updated_at = new Date();
+	
+	//console.log('resp.data.fileimage=' + fileimage);
+	//console.log('category=' + category);
+	//console.log('created_at=' + created_at);
+	
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+	  //client.query('SELECT $1::int AS number', ['1'], function(err, result) {
+		
+		var results = [];
+		client.query("UPDATE products SET name=$1, pricing=$2, category=$3, short_description=$4, long_description=$5, updated_at=$6 WHERE id=$7", [name,pricing,category,short_description,long_description,updated_at,id], function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			response.json({ success: true, update : 'ok' }) ; 
+
+		  });
+	});
+});
+
+
 
 app.post('/api/logout',function(request, response){ 
     request.session.reset();
@@ -146,6 +308,40 @@ app.post('/api/itemReview',function(request, response){
 		  });
 	});
 });
+
+app.get('/api/productDetail',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+		var id =   request.query.id ;
+		var results = [];
+		client.query("SELECT * FROM products WHERE id=($1)", [id], function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+
+			response.writeHead(200, { 'Content-Type': 'text/html' });
+
+			var html = '<!DOCTYPE html><html><head><title>My Title</title></head><body>';
+			html += 'Some more static content';
+			html += 'Some more static content';
+			html += 'Some more static content';
+			html += 'Some dynamic content';
+			html += '</body></html>';
+
+			response.end(html, 'utf-8');
+		  });
+	});
+})
+
 
 app.get('/api/getAccessoryProducts',function(request, response){
 	//if (request.session && request.session.user) {
@@ -248,6 +444,82 @@ app.get('/api/getClothesProducts',function(request, response){
 		
 		var results = [];
 		client.query("SELECT * FROM products where category='clothes' ORDER BY id", function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			
+			return response.json(result.rows);
+		  });
+	});
+})
+
+app.get('/api/getAllProducts',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+		
+		var results = [];
+		client.query("SELECT * FROM products ORDER BY id DESC", function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			
+			return response.json(result.rows);
+		  });
+	});
+})
+
+app.get('/api/getMembers',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+		
+		var results = [];
+		client.query("SELECT * FROM hosen where user_type=1 ORDER BY id", function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			
+			return response.json(result.rows);
+		  });
+	});
+})
+
+
+app.get('/api/getAllProducts',function(request, response){ 
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+		
+		var results = [];
+		client.query("SELECT * FROM products ORDER BY id", function(err, result) {
 			done();
 
 			if(err) {

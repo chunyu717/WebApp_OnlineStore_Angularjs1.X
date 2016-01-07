@@ -26,6 +26,18 @@
         controller: 'signinCtrl',
         controllerAs: 'signin'
       })
+      .state('register', {
+        url: '/register',
+        templateUrl: 'app/register/partials/register.html',
+        controller: 'registerCtrl',
+        controllerAs: 'register'
+      })
+      .state('administrator', {
+        url: '/administrator',
+        templateUrl: 'app/administrator/partials/administrator.html',
+        controller: 'administratorCtrl',
+        controllerAs: 'administrator'
+      })
       .state('groupbuying', {
         url: '/groupbuying',
         templateUrl: 'app/groupbuying/partials/groupbuying.html',

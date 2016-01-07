@@ -15,7 +15,8 @@ angular.module('hosen')
       title: "CxN Boutique",
       peripheral : '最新商品',
       groupBuying : '會員團購專區',
-      signIn : '登入' 
+      signIn : '登入',
+      registerTitle : '加入會員' 
     };
     
     $scope.product = {
@@ -46,13 +47,13 @@ angular.module('hosen')
     
     
     $scope.signInOut = function() {
-      
        if(!vm.IsLogin){
           $location.url('/signin');
        }
        else{
           AuthenticationService.ClearCredentials();
-           $http({
+          $http({
+                //url: 'http://cxn.com.tw:8888/api/logout',
                 url: 'http://122.116.108.112:8888/api/logout',
                 method: "POST",
                 withCredentials: true,
@@ -60,14 +61,19 @@ angular.module('hosen')
                             'Content-Type': 'application/json; charset=utf-8'
                 }
           }).success(function (response) {   
-              
+              console.log('response = ' + response) ;
+               //vm.clothesItems = response;
           }).error(function(error) {
-              
+              console.log('Error: ' + error);
           });
-          
        }
     };
-
+    
+    $scope.register = function() {
+       $location.url('/register');
+    };
+    
+    
     $scope.gotoGroupBuying = function() {
         if(vm.IsLogin){
           $location.url('/groupbuying');
@@ -207,6 +213,26 @@ angular.module('hosen')
             }
         }).success(function (response) {   
               //vm.accessoryItems = response;
+        }).error(function(error) {
+            
+        });
+    };
+    
+    $scope.redirectProduct = function(id) {
+        //$location.url('http://122.116.108.112:8888/api/productDetail?id=1');
+        //$location.hash('/id');
+        $http({
+                url: 'http://122.116.108.112:8888/api/productDetail',
+                method: "GET",
+                withCredentials: true,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8',
+                },
+                params: {
+                  'id' : id
+            }
+        }).success(function (response) {   
+              //$location.url('/id');
         }).error(function(error) {
             
         });
