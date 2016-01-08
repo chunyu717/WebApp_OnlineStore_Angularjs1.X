@@ -47,56 +47,56 @@
             <br>
             <br>
 
-            <form name="registerForm" id= "registerForm" class="form-signin" role="form" ng-submit="register()" >
+            <form name="registerForm" id= "registerForm" class="form-signin" role="form" ng-submit="registerMember()" autocomplete="off" >
                 <h2 class="form-signin-heading" >註冊會員</h2>
                 
-                <label for="inputAccount">
-                        帳號
+                <label for="inputUsername">
+                        登入帳號
                 </label> 
-                <input type="text" name="account" id="inputAccount" class="form-control" placeholder="account" required ng-model="signin.account" />
+                <input type="text" name="username" id="inputUsername" class="form-control" placeholder="account" required ng-model="register.registerInfo.username" />
                 
                 <label for="inputPassword">
                         密碼
                 </label> 
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="signin.password">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="register.registerInfo.password">
                 
                 <label for="inputPassword2">
                         重新輸入密碼
                 </label> 
-                <input type="password" id="inputPassword2" class="form-control" placeholder="Retype Password" required ng-model="signin.password2">
+                <input type="password" id="inputPassword2" class="form-control" placeholder="Retype Password" required ng-model="register.registerInfo.password2">
                 
-                <label for="inputUsername">
-                        姓名
+                <label for="inputRealname">
+                        真實姓名
                 </label> 
-                <input type="text" id="inputUsername" class="form-control" placeholder="User Name" required ng-model="signin.username" />
+                <input type="text" id="inputRealname" class="form-control" placeholder="Real Name" required ng-model="register.registerInfo.realname" />
                 
-                <div ng-init="signin.gender = 'female'"> 
-                    <input type="radio" ng-model="signin.gender" value="male" /> 先生
-                    <input type="radio" ng-model="signin.gender" value="female" /> 女士
+                <div ng-init="register.registerInfo.gender = 'female'"> 
+                    <input type="radio" ng-model="register.registerInfo.gender" value="male" /> 先生
+                    <input type="radio" ng-model="register.registerInfo.gender" value="female" /> 女士
                 </div>
                 
-                <label for="inputPhone">
+                <label for="inputMobile">
                         電話
                 </label> 
-                <input type="text" name="phone" id="inputPhone" class="form-control" placeholder="Mobile Number" required ng-model="signin.phone" />
+                <input type="text" name="mobile" id="inputMobile" class="form-control" placeholder="Mobile Number" required ng-model="register.registerInfo.mobile" />
                 
                 <label for="inputAddress">
                         地址
                 </label> 
-                <input type="text" name="address" id="inputAddress" class="form-control" placeholder="Address" ng-model="signin.address" />
+                <input type="text" name="address" id="inputAddress" class="form-control" placeholder="Address" ng-model="register.registerInfo.address" />
                 
                 <label for="inputEmail">
                         電子郵件
                 </label> 
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="signin.email">
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="register.registerInfo.email">
                 
-                <label for="inputComment">
+                <label for="inputNote">
                         備註<p>
                 </label> 
                 
-                <textarea rows="4" cols="35" name="comment" form="registerForm" id="inputComment" > </textarea>
+                <textarea class="form-control" rows="4" cols="35" name="inputNote" id="inputNote" ng-model="register.registerInfo.note" novalidate> </textarea>
                 
-                <div ng-show="signin.error" class="alert alert-danger">{{signin.errorMsg}}</div>
+                <div ng-show="register.error" class="alert alert-danger">{{register.errorMsg}}</div>
                 
                 <div id="recaptcha2" class="g-recaptcha" data-theme="dark" data-sitekey="6Ld9yhMTAAAAANeyP2PcAFgPPgtRUhMbte8_vnOp" data-callback="setCaptchaSuccess" data-expired-callback="resetCaptcha" ></div>
                 

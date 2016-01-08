@@ -1,20 +1,6 @@
 (function() {
   'use strict';
 
- 
- /*
- angular.module('hosen', ['reCAPTCHA'])
-       .config(function (reCAPTCHAProvider) {
-            // required: please use your own key :)
-            reCAPTCHAProvider.setPublicKey('---KEY---');
-
-            // optional: gets passed into the Recaptcha.create call
-            reCAPTCHAProvider.setOptions({
-                theme: 'clean'
-            });
-        })
-   */     
- 
   angular
     .module('hosen')
     .config(config);

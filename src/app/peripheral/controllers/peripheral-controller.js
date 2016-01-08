@@ -8,8 +8,8 @@
  * Controller of the hosen
  */
 angular.module('hosen')
-  .controller('peripheralCtrl', ['$scope','$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService' ,
-  function ($scope, $rootScope , $location, $anchorScroll, $http, AuthenticationService) {
+  .controller('peripheralCtrl', ['$scope','$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService' , '$window',
+  function ($scope, $rootScope , $location, $anchorScroll, $http, AuthenticationService, $window) {
     
     $scope.navbar = {
       title: "CxN Boutique",
@@ -28,24 +28,21 @@ angular.module('hosen')
     
     var vm = this;
   
-    vm.newsTitle = '最新消息' ;
-    vm.priceAndServiceTitle  = '服務項目' ;
-    vm.locationTitle = "交通指南" ;
-    vm.contactUS = "聯絡我們"; 
     vm.IsClothes = true;
     vm.IsShoes = false;
    
-    $rootScope.$watch('globals', function(/*newVal, oldVal*/) {
+    $rootScope.$watch('globals', function(newVal, oldVal) {
             vm.IsLogin = ($rootScope.globals.currentUser);
             if(vm.IsLogin) {
-               $scope.navbar.signIn = '登出' ;
+                $scope.navbar.IsLogin = true;
+                $scope.navbar.signIn = '登出' ;
+                $scope.navbar.username = $rootScope.globals.currentUser.username;
             } else {
                $scope.navbar.signIn = '登入' ;
+               $scope.navbar.IsLogin = false;
             }
     }, true); 
-    
-    
-    
+
     $scope.signInOut = function() {
        if(!vm.IsLogin){
           $location.url('/signin');
@@ -69,7 +66,7 @@ angular.module('hosen')
        }
     };
     
-    $scope.register = function() {
+    $scope.gotoRegister = function() {
        $location.url('/register');
     };
     
@@ -78,47 +75,13 @@ angular.module('hosen')
         if(vm.IsLogin){
           $location.url('/groupbuying');
         } else {
+          setTimeout(function() {
+            $window.alert('請先登入!');
+          });
           $location.url('/signin');
         }
     };
-    
-    $scope.gotoLocation = function() {
-      // set the location.hash to the id of
-      // the element you wish to scroll to.
-      $location.url('/#Location');
 
-      // call $anchorScroll()
-      $anchorScroll();
-    };
-    
-    $scope.gotoPrice = function() {
-      // set the location.hash to the id of
-      // the element you wish to scroll to.
-       $location.url('/#Price');
-
-      // call $anchorScroll()
-      $anchorScroll();
-    };
-    
-    $scope.gotoNews = function() {
-      // set the location.hash to the id of
-      // the element you wish to scroll to.
-       $location.url('/#News');
-
-      // call $anchorScroll()
-      $anchorScroll();
-    };
-    
-    $scope.gotoContactUS = function() {
-      // set the location.hash to the id of
-      // the element you wish to scroll to.
-       $location.url('/#ContactUS');
-
-      // call $anchorScroll()
-      $anchorScroll();
-    };
-
-    
     $scope.setCategory = function(value) {
  
       if(value === 'clothes'){

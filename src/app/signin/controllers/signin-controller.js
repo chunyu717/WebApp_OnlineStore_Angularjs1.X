@@ -8,9 +8,9 @@
  * Controller of the hosen
  */
 angular.module('hosen')
-  .controller('signinCtrl', ['$scope', '$location', '$anchorScroll', '$http', 'AuthenticationService',
+  .controller('signinCtrl', ['$scope', '$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService', '$window',
   
-  function ($scope, $location, $anchorScroll,$http , AuthenticationService ) {
+  function ($scope, $rootScope, $location, $anchorScroll,$http , AuthenticationService, $window ) {
     
     $scope.navbar = {
       title: "CxN Boutique",
@@ -21,11 +21,19 @@ angular.module('hosen')
     };
     
     var vm = this;
-    vm.title = "CxN Boutique";
-    vm.IsSignin = true;
-    vm.error = false;
     vm.captchaSuccess = false;    
  
+    $rootScope.$watch('globals', function(newVal, oldVal) {
+            vm.IsLogin = ($rootScope.globals.currentUser);
+            if(vm.IsLogin) {
+                $scope.navbar.IsLogin = true;
+                $scope.navbar.signIn = '登出' ;
+                $scope.navbar.username = $rootScope.globals.currentUser.username;
+            } else {
+               $scope.navbar.signIn = '登入' ;
+               $scope.navbar.IsLogin = false;
+            }
+    }, true);
    
     (function initController() {
         // reset login status
@@ -33,6 +41,18 @@ angular.module('hosen')
          
     })();
 
+    $scope.logIn = function () { 
+        AuthenticationService.Login(vm.account, vm.password, function (response) {
+            if (response.success &&   response.auth === 'ok' ) {
+                AuthenticationService.SetCredentials(vm.account, vm.password);
+                $location.path('/');
+            } else {
+                vm.error = true;
+                vm.errorMsg = "帳號或密碼錯誤";
+            }
+        });
+    }; 
+    
     $scope.signInOut = function() {
        if(!vm.IsLogin){
           $location.url('/signin');
@@ -40,7 +60,6 @@ angular.module('hosen')
        else{
           AuthenticationService.ClearCredentials();
           $http({
-                //url: 'http://cxn.com.tw:8888/api/logout',
                 url: 'http://122.116.108.112:8888/api/logout',
                 method: "POST",
                 withCredentials: true,
@@ -48,23 +67,34 @@ angular.module('hosen')
                             'Content-Type': 'application/json; charset=utf-8'
                 }
           }).success(function (response) {   
-              console.log('response = ' + response) ;
-               //vm.clothesItems = response;
+              
           }).error(function(error) {
-              console.log('Error: ' + error);
+              
           });
        }
     };
-    
+ 
     $scope.register = function() {
        $location.url('/register');
     };
     
+     $scope.setCaptchaSuccess = function () {
+       console.log('setCaptchaSuccess!');
+       vm.captchaSuccess = true; 
+   };  
+   
+   $scope.resetCaptcha = function () {
+       console.log('resetCaptcha!');
+       vm.captchaSuccess = false;    
+   }; 
     
     $scope.gotoGroupBuying = function() {
         if(vm.IsLogin){
           $location.url('/groupbuying');
         } else {
+          setTimeout(function() {
+            $window.alert('請先登入!');
+          });
           $location.url('/signin');
         }
     };

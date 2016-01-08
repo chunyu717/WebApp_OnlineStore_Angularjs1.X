@@ -71,15 +71,11 @@
         <li class="active"><a data-toggle="tab" href="#home" ng-click="getProducts()">商品管理</a></li>
         <li><a data-toggle="tab" href="#menu1" ng-click="getMembers()">會員管理</a></li>
         <li><a data-toggle="tab" href="#menu2" ng-click="getApplies()">待批準會員申請</a></li>
+        <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.addProductMsg = null ; administrator.addProduct = null; administrator.addProduct.category = 'clothes' "/>
     </ul>
 
     <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-        <br>
-        <!-- 
-        <button class="btn btn-lg btn-primary btn-block" style="WIDTH: 100px; HEIGHT: 45px" alt="" href="#" 
-        data-toggle="modal" data-target="#addProduct">新增商品</button> -->
-        <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.addProductMsg = null ; administrator.addProduct = null;"/>
         <table class="table">
             <thead>
             <tr>
@@ -110,8 +106,9 @@
                 <td>{{item.category}}</td>
                 <td>{{item.created_at}}</td>
                 <td>
-                    <input type="button" value="移除" class="btn btn-primary" ng-click="removeProduct({{item.id}})"/>
                     <input type="button" value="修改" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" ng-click="administrator.updateProductMsg = null ; administrator.updateProduct = item;"/>
+                    <p><p>
+                    <input type="button" value="移除" class="btn btn-primary" ng-click="removeProduct({{item.id}})"/>
                 </td>
             </tr>
             </tbody>
@@ -121,35 +118,65 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>username</th>
+                <th>password</th>
+                <th>realname</th>
+                <th>gender</th>
                 <th>Email</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
+                <th>address</th>
+                <th>mobile</th>
+                <th>note</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="item in administrator.members">
                 <td>{{item.username}}</td>
                 <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
-                <td>{{item.password}}</td>
+                <td>{{item.realname}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.mobile}}</td>
+                <td>{{item.note}}</td>
+                <td>
+                    <input type="button" value="刪除會員" class="btn btn-primary" ng-click="removeMember({{item.id}})"/>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div id="menu2" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>username</th>
+                <th>password</th>
+                <th>realname</th>
+                <th>gender</th>
+                <th>Email</th>
+                <th>address</th>
+                <th>mobile</th>
+                <th>note</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in administrator.applies">
+                <td>{{item.username}}</td>
+                <td>{{item.password}}</td>
+                <td>{{item.realname}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.mobile}}</td>
+                <td>{{item.note}}</td>
+                <td>
+                    <input type="button" value="批准會員" class="btn btn-primary" ng-click="approveMember({{item.id}})"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     </div>
     
@@ -162,11 +189,12 @@
                     <h4 class="modal-title" id="addProduct-title">新增商品</h4>
                 </div>
                 <div class="modal-body">
-                     <form name="myForm" id="myForm" role="form" >
+                     <form name="myForm" id="myForm" role="form" autocomplete="off" >
                         <label for="userName">
                                         商品名稱　:
                         </label> 
                         <input type="text" name="userName" ng-model="administrator.addProduct.name" size="28" required>
+                        <br>
                         <br>
                         <label for="pricing">
                                         價格　　　:
@@ -177,8 +205,8 @@
                                         類別　　　:
                         </label>
                         
-                        <select name="category" form="myForm" id="category" ng-model="administrator.addProduct.category" required>
-                            <option value="clothes">clothes</option> 
+                        <select name="category" form="myForm" id="category"  ng-model="administrator.addProduct.category" required>
+                            <option value="clothes" selected="selected">clothes</option> 
                             <option value="shoes">shoes</option> 
                             <option value="accessory">accessory</option>
                         </select><br>
@@ -218,8 +246,9 @@
                         <span class="err" ng-show="errorMsg">{{administrator.errorMsg}}</span>
                         <br>
                         -->
+                        <p>
                         <button type="submit" ng-click="addProduct(administrator.picFile)">新增商品</button>
-                        <p >{{administrator.addProductMsg}}</p>
+                        <p>{{administrator.addProductMsg}}</p>
                     </form>
 
                 </div>
@@ -241,6 +270,7 @@
                                         商品名稱　:
                         </label> 
                         <input type="text" name="userName" ng-model="administrator.updateProduct.name" size="30" required>
+                        <br>
                         <br>
                         <label for="pricing">
                                         價格　　　:

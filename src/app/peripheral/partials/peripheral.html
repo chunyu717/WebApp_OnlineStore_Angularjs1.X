@@ -34,11 +34,11 @@
 
             <!-- Clothes -->
             <div class="col-md-10" ng-init="setCategory('clothes')" ng-show="peripheral.IsClothes">
-                <div class="row"  >
+                <div class="row">
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.clothesItems">
                         <div class="thumbnail" >
                             <!-- <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" ng-click="redirectProduct('{{item.id}}')" > -->
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" href="#image-gallery" data-toggle="modal" data-target="#image-gallery" 
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" href="#image-gallery" data-toggle="modal" data-target="#image-gallery" 
                             ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}', '{{item.name}}' )">  
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
@@ -64,7 +64,7 @@
                 <div class="row"  >
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.shoesItems">
                         <div class="thumbnail" >
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>
@@ -89,7 +89,7 @@
                 <div class="row"  >
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.accessoryItems">
                         <div class="thumbnail" >
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>
@@ -109,7 +109,6 @@
                 </div>
             </div>
            <!-- /.IsAccessory -->
-            
         </div>  <!-- /.row -->
     </div> <!-- /.container -->
 
@@ -121,13 +120,12 @@
                     <h4 class="modal-title" id="image-gallery-title">{{ peripheral.name }}</h4>
                 </div>
                 <div class="modal-body">
-                    
                      <img id="image-gallery-image" alt="" class="img-responsive" src="assets/images/{{peripheral.enlargeImageUrlPic}}" ng-click="changeModalPic()" >
-                    <!--
-                    <div ng-repeat="n in peripheral.enlargeImageUrlPics">
+                     <!--
+                     <div ng-repeat="n in peripheral.enlargeImageUrlPics">
                      <img id="image-gallery-image" alt="" class="img-responsive" src="assets/images/{{n}}" ng-click="changeModalPic()" > 
-                    
-                     <div product></div> -->
+                     <div product></div>
+                      -->
                 </div>
                 <div class="modal-footer">
                     <div class="text-justify" id="image-gallery-caption">
@@ -140,7 +138,6 @@
 
     <div class="container-fluid ">
         <hr>
-        <!-- Footer -->
         <footer>
             <div class="row">
                 <div class="col-lg-12">

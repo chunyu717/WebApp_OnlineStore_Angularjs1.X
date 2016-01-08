@@ -9,9 +9,11 @@
  */
 angular.module('hosen')
   //.controller('registerCtrl', function ($scope) {
-   .controller('registerCtrl', ['$scope', '$location', '$anchorScroll', '$http', 'AuthenticationService' ,
+   .controller('registerCtrl', ['$scope', '$rootScope','$location', '$anchorScroll', '$http', 'AuthenticationService' , '$window', 
   
-  function ($scope, $location, $anchorScroll, $http, AuthenticationService) {
+  function ($scope, $rootScope, $location, $anchorScroll, $http, AuthenticationService, $window) {
+    
+    var vm = this;
     
     $scope.navbar = {
       title: "CxN Boutique",
@@ -20,20 +22,23 @@ angular.module('hosen')
       signIn : '登入',
       registerTitle : '加入會員'  
     };
-    
-    var vm = this;
-    vm.title = "CxN Boutique";
-    vm.IsSignin = true;
-    vm.error = false;
-    vm.captchaSuccess = false;    
- 
-   
+
     (function initController() {
-        // reset login status
-       
-         
+
     })();
 
+    $rootScope.$watch('globals', function(newVal, oldVal) {
+            vm.IsLogin = ($rootScope.globals.currentUser);
+            if(vm.IsLogin) {
+                $scope.navbar.IsLogin = true;
+                $scope.navbar.signIn = '登出' ;
+                $scope.navbar.username = $rootScope.globals.currentUser.username;
+            } else {
+               $scope.navbar.signIn = '登入' ;
+               $scope.navbar.IsLogin = false;
+            }
+    }, true);
+    
     $scope.signInOut = function() {
        if(!vm.IsLogin){
           $location.url('/signin');
@@ -57,7 +62,33 @@ angular.module('hosen')
        }
     };
     
-    $scope.register = function() {
+    $scope.registerMember = function() {
+        if( vm.registerInfo.password !==  vm.registerInfo.password2 ){
+            vm.error = true;
+            vm.errorMsg = "密碼不符";
+            return false;
+        }
+        $http({
+                //url: 'http://cxn.com.tw:8888/api/logout',
+                url: 'http://122.116.108.112:8888/api/register',
+                method: "POST",
+                withCredentials: true,
+                data :  vm.registerInfo,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+          }).success(function (response) {   
+              //console.log('response = ' + response) ;
+              //vm.clothesItems = response;
+              vm.errorMsg = "申請成功，請等待核可通知!";
+          }).error(function(error) {
+              console.log('Error: ' + error);
+              vm.errorMsg = "申請失敗，請確認資料!";
+          });
+    };
+    
+    
+    $scope.gotoRegister = function() {
        $location.url('/register');
     };
     
@@ -66,9 +97,12 @@ angular.module('hosen')
         if(vm.IsLogin){
           $location.url('/groupbuying');
         } else {
+          setTimeout(function() {
+            $window.alert('請先登入!');
+          });
           $location.url('/signin');
         }
-    };   
+    };
   
   }]);
  })();

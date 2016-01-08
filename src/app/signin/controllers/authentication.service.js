@@ -15,27 +15,7 @@
         return service;
  
         function Login(account, password, callback) {
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-             /*s
-            $timeout(function () {
-                var response;
-                UserService.GetByUsername(username)
-                    .then(function (user) {
-                        if (user !== null && user.password === password) {
-                            response = { success: true };
-                        } else {
-                            response = { success: false, message: 'Username or password is incorrect' };
-                        }
-                        callback(response);
-                    });
-            }, 1000);
-            */
-            /* Use this for real authentication
-             ----------------------------------------------*/
-            //$http.post('http://10.144.171.57:8888/api/authenticate', { username: username, password: password })
             $http({
-                    //url: 'http://cxn.com.tw:8888/api/authenticate', //cxnurl + '/api/authenticate',
                     url: 'http://122.116.108.112:8888/api/authenticate',
                     method: "POST",
                     params: { username: account, password: Base64.encode(password) },
