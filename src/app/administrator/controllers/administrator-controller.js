@@ -55,6 +55,18 @@ angular.module('hosen')
             //console.log('progress: ' + file.progress + '% ' + evt.config.data.file.name);
         });
     };
+    
+    $scope.categoryChange =  function() {
+        console.log(' addProduct.category!  = ' + vm.updateProduct.category);
+        //""addProduct.category = ""
+    } ; 
+    
+    $scope.category = [ 
+      'clothes',
+      'shoes',
+      'accessory'
+    ];
+  
   
     $scope.navbar = {
       title: "CxN Boutique",

@@ -8,7 +8,7 @@
 		<meta name="author" content="">
 		<link rel="icon" href="favicon.ico">
         
-        <script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+        <!--<script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>-->
 
 		<link href="assets/bundle.css" rel="stylesheet" type="text/css" />
    		<script src="assets/bundle.js"></script>
@@ -106,7 +106,7 @@
                 <td>{{item.category}}</td>
                 <td>{{item.created_at}}</td>
                 <td>
-                    <input type="button" value="修改" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" ng-click="administrator.updateProductMsg = null ; administrator.updateProduct = item;"/>
+                    <input type="button" value="修改" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" ng-click="administrator.updateProductMsg = null ; administrator.updateProduct = item; "/>
                     <p><p>
                     <input type="button" value="移除" class="btn btn-primary" ng-click="removeProduct({{item.id}})"/>
                 </td>
@@ -118,14 +118,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th>username</th>
-                <th>password</th>
-                <th>realname</th>
-                <th>gender</th>
+                <th>會員帳號</th>
+                <th>會員密碼</th>
+                <th>會員姓名</th>
+                <th>會員性別</th>
                 <th>Email</th>
-                <th>address</th>
-                <th>mobile</th>
-                <th>note</th>
+                <th>地址</th>
+                <th>電話</th>
+                <th>備註</th>
                 <th></th>
             </tr>
             </thead>
@@ -150,14 +150,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th>username</th>
-                <th>password</th>
-                <th>realname</th>
-                <th>gender</th>
+                <th>會員帳號</th>
+                <th>會員密碼</th>
+                <th>會員姓名</th>
+                <th>會員性別</th>
                 <th>Email</th>
-                <th>address</th>
-                <th>mobile</th>
-                <th>note</th>
+                <th>地址</th>
+                <th>電話</th>
+                <th>備註</th>
                 <th></th>
             </tr>
             </thead>

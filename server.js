@@ -48,6 +48,8 @@ var upload = multer({
 	*/
  }).single('file')
 
+var fs = require('fs');
+ 
 app.all('*', function(req, res,next) {
 
     var responseSettings = {
@@ -162,12 +164,10 @@ app.post('/api/photo/upload', function (request, response, next) {
 		}
 		response.json({ success: true, fileimage : request.file.filename }) ; 
 	  })
-})
+});
 
-app.post('/api/removeProduct',function(request, response){ 
-
-	if(request.session.user !== 'admin')
-		return response.status(403).json({ success: false, data: "adminOnly"});
+function deleteFile(productId) {
+	
 	
 	var pg = require('pg');
 	
@@ -177,14 +177,60 @@ app.post('/api/removeProduct',function(request, response){
 
 	  if(err) {
           done();
+          return false;
+      }	
+		var results = [];
+		client.query("SELECT * FROM products WHERE id=($1)", [productId], function(err, result) {
+			done();
+			console.log('in Delete file');
+			if ( result.rows[0] !== undefined){ 
+				console.log('result.rows[0].icon =' + result.rows[0].icon);
+				//fs.unlink('C:\\hosen\\src\\assets\\images\\' + result.rows[0].icon +'\'', (err) => {
+				fs.unlink('src/assets/images/' + result.rows[0].icon, (err) => {
+				  if (err){
+					  console.log('err = ' + err);
+					  return false;
+				  }
+				  
+				}); 
+				console.log('success');
+				return true;
+			}else{
+				console.log('false');
+				return false;
+			}
+		  });
+	});
+};
+ 
+
+app.post('/api/removeProduct',function(request, response){ 
+
+	if(request.session.user !== 'admin')
+		return response.status(403).json({ success: false, data: "adminOnly"});
+
+	var pg = require('pg');
+	
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	
+	var productId =   request.query.productId ;
+	
+	var deleteFileResult  = null ; 
+	deleteFileResult = deleteFile(productId);
+	console.log('deleteFileResult = ' + deleteFileResult) ;
+	
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
           return response.status(500).json({ success: false, data: err});
       }
-		var productId =   request.query.productId ;
-		
+	
 		var results = [];
+
+		
 		client.query("DELETE FROM products WHERE id=($1)", [productId], function(err, result) {
 			done();
-
 			if(err) {
 			  return response.status(500).json({ success: false, data: err});
 			}
