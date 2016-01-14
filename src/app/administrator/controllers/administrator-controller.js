@@ -56,17 +56,18 @@ angular.module('hosen')
         });
     };
     
+    /*
     $scope.categoryChange =  function() {
         console.log(' addProduct.category!  = ' + vm.updateProduct.category);
         //""addProduct.category = ""
     } ; 
     
     $scope.category = [ 
-      'clothes',
-      'shoes',
-      'accessory'
+      { name :'clothes'},
+      { name :'shoes'},
+      { name :'accessory'}
     ];
-  
+    */
   
     $scope.navbar = {
       title: "CxN Boutique",
@@ -187,6 +188,49 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                vm.applies = response;
+          }).error(function(error) {
+              
+          });
+    };
+    
+    $scope.getOrders = function() {
+      $http({
+                url: 'http://122.116.108.112:8888/api/getOrders',
+                method: "GET",
+                withCredentials: true,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+          }).success(function (response) {   
+               vm.orders = response;
+          }).error(function(error) {
+              
+          });
+    };
+    
+    $scope.removeOrder = function(orderId) {
+      $http({
+                
+                url: 'http://122.116.108.112:8888/api/removeOrder',
+                method: "POST",
+                withCredentials: true,
+                params: { orderId: orderId },
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+          }).success(function (response) {   
+               $http({
+                    url: 'http://122.116.108.112:8888/api/getOrders',
+                    method: "GET",
+                    withCredentials: true,
+                    headers: {
+                                'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }).success(function (response) {   
+                    vm.orders = response;
+                }).error(function(error) {
+                    
+                });
           }).error(function(error) {
               
           });

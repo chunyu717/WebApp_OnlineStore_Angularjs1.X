@@ -71,6 +71,7 @@
         <li class="active"><a data-toggle="tab" href="#home" ng-click="getProducts()">商品管理</a></li>
         <li><a data-toggle="tab" href="#menu1" ng-click="getMembers()">會員管理</a></li>
         <li><a data-toggle="tab" href="#menu2" ng-click="getApplies()">待批準會員申請</a></li>
+        <li><a data-toggle="tab" href="#menu3" ng-click="getOrders()">訂單</a></li>
         <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.addProductMsg = null ; administrator.addProduct = null; administrator.addProduct.category = 'clothes' "/>
     </ul>
 
@@ -178,6 +179,34 @@
             </tbody>
         </table>
     </div>
+    <div id="menu3" class="tab-pane fade">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>訂單號</th>
+                <th>商品代碼</th>
+                <th>會員名稱</th>
+                <th>商品名稱</th>
+                <th>訂單時間</th>
+                <th>備註</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in administrator.orders">
+                <td>{{item.id}}</td>
+                <td>{{item.product_id}}</td>
+                <td>{{item.username}}</td>
+                <td>{{item.product_name}}</td>
+                <td>{{item.created_at}}</td>
+                <td>{{item.additional_note}}</td>
+                <td>
+                    <input type="button" value="刪除訂單" class="btn btn-primary" ng-click="removeOrder({{item.id}})"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     </div>
     
     
@@ -257,7 +286,7 @@
         </div>
     </div>
     
-    <iv class="modal" id="updateProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" id="updateProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm" >
             <div class="modal-content" >
                 <div class="modal-header">

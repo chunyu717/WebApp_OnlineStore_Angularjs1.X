@@ -105,7 +105,106 @@ app.post('/api/authenticate',function(request, response){
 		  });
 	});
 });
+
+app.post('/api/purchaseProduct',function(request, response){ 
+	//console.log('purchaseProduct Authorization' + request.get('Authorization') ) ; 
+	if( request.get('Authorization') === undefined)
+		return response.status(403);
+	
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	
+	var username =   request.body.username ;
+	var purchaseProductName =   request.body.purchaseProductName ;
+	var purchaseProductId =   request.body.purchaseProductId ;
+	var additionalNote =   request.body.addtionNote ;
+	
+	var created_at = new Date();
+	
+	/*
+	console.log('username = ' +  username) ;
+	console.log('purchaseProductName = ' +  purchaseProductName) ;
+	console.log('purchaseProductId = ' +  purchaseProductId) ;
+	console.log('additionalNote = ' +  additionalNote) ;
+	console.log('created_at = ' +  created_at) ;
+	*/
+	pg.connect(conString, function(err, client, done) {
+		if(err) {
+		  done();
+		  return response.status(500).json({ success: false, data: err});
+		}
+		var results = [];
+		client.query("INSERT INTO productorder(product_id, additional_note, created_at, username,  product_name) VALUES ($1,$2,$3,$4,$5)", [purchaseProductId, additionalNote, created_at, username, purchaseProductName], function(err, result) {
+			done();
+
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			response.json({ success: true, insert : 'ok' }) ; 
+
+		});
+	});
+});
+
 //************************Admin********************//
+
+app.get('/api/getOrders',function(request, response){ 
+
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
+		return response.status(403).json({ success: false, data: "adminOnly"});
+	
+    var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+
+	pg.connect(conString, function(err, client, done) {
+
+		if(err) {
+		  done();
+		  return response.status(500).json({ success: false, connect: err});
+		}
+		var results = [];
+		client.query("SELECT * FROM productorder ORDER BY id DESC", function(err, result) {
+			done();
+			if(err) {
+			  return response.status(500).json({ success: false, select: err});
+			}
+			return response.json(result.rows);
+		  });
+	});
+});
+
+app.post('/api/removeOrder',function(request, response){ 
+
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
+		return response.status(403).json({ success: false, data: "adminOnly"});
+
+	var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	var orderId =   request.query.orderId ;
+	
+	pg.connect(conString, function(err, client, done) {
+
+	  if(err) {
+          done();
+          return response.status(500).json({ success: false, data: err});
+      }
+	
+		var results = [];
+
+		
+		client.query("DELETE FROM productorder WHERE id=($1)", [orderId], function(err, result) {
+			done();
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}
+			
+			response.json({ success: true, update : 'ok' }) ; 
+
+		  });
+	});
+});
+
 
 app.post('/api/register',function(request, response){ 
 	
@@ -124,6 +223,7 @@ app.post('/api/register',function(request, response){
 	var note =   request.body.note ;
 	
 	var created_at = new Date();
+	/*
 	console.log('username' +  username) ;
 	console.log('password' +  password) ;
 	console.log('realname' +  realname) ;
@@ -132,6 +232,7 @@ app.post('/api/register',function(request, response){
 	console.log('address' +  address) ;
 	console.log('email' +  email) ;
 	console.log('note' +  note) ;
+	*/
 	
 	pg.connect(conString, function(err, client, done) {
 		if(err) {
@@ -155,7 +256,7 @@ app.post('/api/register',function(request, response){
 
 app.post('/api/photo/upload', function (request, response, next) {
 	
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
 	upload(request, response, function (err) {
@@ -166,9 +267,7 @@ app.post('/api/photo/upload', function (request, response, next) {
 	  })
 });
 
-function deleteFile(productId) {
-	
-	
+function deleteFile(productId, callback) {
 	var pg = require('pg');
 	
 	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
@@ -182,21 +281,18 @@ function deleteFile(productId) {
 		var results = [];
 		client.query("SELECT * FROM products WHERE id=($1)", [productId], function(err, result) {
 			done();
-			console.log('in Delete file');
-			if ( result.rows[0] !== undefined){ 
-				console.log('result.rows[0].icon =' + result.rows[0].icon);
-				//fs.unlink('C:\\hosen\\src\\assets\\images\\' + result.rows[0].icon +'\'', (err) => {
-				fs.unlink('src/assets/images/' + result.rows[0].icon, (err) => {
+			if ( result.rows[0] !== undefined && result.rows[0].icon !== null ){ 
+				fs.unlink('src/assets/images/' + result.rows[0].icon.trim(), (err) => {
 				  if (err){
 					  console.log('err = ' + err);
 					  return false;
 				  }
 				  
 				}); 
-				console.log('success');
+				//console.log('success');
 				return true;
 			}else{
-				console.log('false');
+				//console.log('false');
 				return false;
 			}
 		  });
@@ -206,19 +302,16 @@ function deleteFile(productId) {
 
 app.post('/api/removeProduct',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 
 	var pg = require('pg');
-	
 	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
-	
 	var productId =   request.query.productId ;
-	
-	var deleteFileResult  = null ; 
+	var deleteFileResult  = 'ture' ; 
 	deleteFileResult = deleteFile(productId);
-	console.log('deleteFileResult = ' + deleteFileResult) ;
-	
+	//console.log('deleteFileResult = ' + deleteFileResult) ;
+	//TODO : async delete file , should be fixed
 	pg.connect(conString, function(err, client, done) {
 
 	  if(err) {
@@ -243,7 +336,7 @@ app.post('/api/removeProduct',function(request, response){
 
 app.post('/api/addProduct',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
     var pg = require('pg');
@@ -279,7 +372,7 @@ app.post('/api/addProduct',function(request, response){
 
 app.post('/api/updateProduct',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
     var pg = require('pg');
@@ -311,7 +404,7 @@ app.post('/api/updateProduct',function(request, response){
 
 app.post('/api/createUser',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
     var pg = require('pg');
@@ -342,9 +435,21 @@ app.post('/api/createUser',function(request, response){
 });
 
 app.get('/api/getMembers',function(request, response){ 
-
+	/*
 	if(request.session.user !== 'admin')
 		return response.status(403).json({ success: false, data: "adminOnly"});
+	*/
+
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
+		return response.status(403).json({ success: false, data: "adminOnly"});
+	 /*
+	var Cookies = {};
+	request.headers.cookie && request.headers.cookie.split(';').forEach(function( Cookie ) {
+        var parts = Cookie.split('=');
+        Cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+    });
+	 console.log(Cookies);
+	 */
 	
     var pg = require('pg');
 	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
@@ -363,11 +468,11 @@ app.get('/api/getMembers',function(request, response){
 			return response.json(result.rows);
 		  });
 	});
-})
+});
 
 app.post('/api/approveMember',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
     var pg = require('pg');
@@ -393,7 +498,7 @@ app.post('/api/approveMember',function(request, response){
 
 app.post('/api/removeMember',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
 	var pg = require('pg');
@@ -425,7 +530,7 @@ app.post('/api/removeMember',function(request, response){
 
 app.get('/api/getApplies',function(request, response){ 
 
-	if(request.session.user !== 'admin')
+	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
 	
     var pg = require('pg');
@@ -445,7 +550,7 @@ app.get('/api/getApplies',function(request, response){
 			return response.json(result.rows);
 		  });
 	});
-})
+});
 
 //************************Admin********************//
 
@@ -510,11 +615,12 @@ app.get('/api/productDetail',function(request, response){
 			response.end(html, 'utf-8');
 		  });
 	});
-})
+});
 
 
 app.get('/api/getAccessoryProducts',function(request, response){
 	//if (request.session && request.session.user) {
+		
 		var pg = require('pg');
 		var conString = "postgres://nodejs:nodejs@localhost/nodejs";
 		pg.connect(conString, function(err, client, done) {
@@ -538,6 +644,9 @@ app.get('/api/getAccessoryProducts',function(request, response){
 });
 
 app.get('/api/groupBuying',function(request, response){
+	
+	
+	
 	if (request.session && request.session.user) {
 		var pg = require('pg');
 		var conString = "postgres://nodejs:nodejs@localhost/nodejs";
@@ -583,7 +692,7 @@ app.get('/api/getShoesProducts',function(request, response){
 			return response.json(result.rows);
 		  });
 	});
-})
+});
 
 app.get('/api/getClothesProducts',function(request, response){ 
     var pg = require('pg');
@@ -604,7 +713,7 @@ app.get('/api/getClothesProducts',function(request, response){
 			return response.json(result.rows);
 		  });
 	});
-})
+});
 
 app.get('/api/getAllProducts',function(request, response){ 
     var pg = require('pg');
@@ -625,7 +734,7 @@ app.get('/api/getAllProducts',function(request, response){
 			return response.json(result.rows);
 		  });
 	});
-})
+});
 
 
 var Base64 = {

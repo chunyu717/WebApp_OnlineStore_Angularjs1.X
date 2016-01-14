@@ -19,13 +19,6 @@ angular.module('hosen')
       registerTitle : '加入會員' 
     };
     
-    $scope.product = {
-      pricing : "CxN Boutique",
-      name : '最新商品',
-      short_description  : '會員團購專區',
-      rating_count  : '登入' 
-    };
-    
     var vm = this;
   
     vm.IsClothes = true;
@@ -37,12 +30,31 @@ angular.module('hosen')
                 $scope.navbar.IsLogin = true;
                 $scope.navbar.signIn = '登出' ;
                 $scope.navbar.username = $rootScope.globals.currentUser.username;
+                vm.username = $rootScope.globals.currentUser.username;
             } else {
                $scope.navbar.signIn = '登入' ;
                $scope.navbar.IsLogin = false;
             }
     }, true); 
 
+    $scope.purchaseProduct = function(file) {
+        vm.purchaseProduct.username = vm.username;
+        $http({
+            url: 'http://122.116.108.112:8888/api/purchaseProduct',
+            method: "POST",
+            withCredentials: true,
+            params: "",
+            data :  vm.purchaseProduct,
+            headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).success(function (response) {   
+            vm.addProductMsg = "訂購商品成功!!" ;
+        }).error(function(error) {
+                vm.addProductMsg = "訂購商品失敗!!" ;
+        });
+    };
+    
     $scope.signInOut = function() {
        if(!vm.IsLogin){
           $location.url('/signin');
@@ -181,6 +193,7 @@ angular.module('hosen')
         });
     };
     
+    /*
     $scope.redirectProduct = function(id) {
         //$location.url('http://122.116.108.112:8888/api/productDetail?id=1');
         //$location.hash('/id');
@@ -200,6 +213,7 @@ angular.module('hosen')
             
         });
     };
+    */
     
     $scope.changeModalPic = function() {
       //console.log('click!');
