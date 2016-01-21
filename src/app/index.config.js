@@ -16,7 +16,7 @@
     toastr.options.progressBar = true;
     
     //cxnurl = 'http://cxn.com.tw:8888';
-    
+    //myDomainSetting= 'cxn.ya!';
   }
   
 

@@ -8,22 +8,21 @@
  * Controller of the hosen
  */
 angular.module('hosen')
-  .controller('administratorCtrl', ['$scope', '$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService',  'Upload',  '$timeout' , 
+  .controller('administratorCtrl', ['$scope', '$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService',  'Upload',  '$timeout' , 'config',
   
-  function ($scope, $rootScope, $location, $anchorScroll, $http, AuthenticationService, Upload, $timeout ) {
+  function ($scope, $rootScope, $location, $anchorScroll, $http, AuthenticationService, Upload, $timeout , config ) {
     
     var vm = this;
+    
     $scope.addProduct = function(file) {
         file.upload = Upload.upload({
-            url: 'http://122.116.108.112:8888/api/photo/upload',
+            url: config.myDomianName + '/api/photo/upload',
             withCredentials: true,
             data: {file: file, username: $scope.username},
         }).then(function (resp) {
-            //console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            //console.log('resp.data.fileimage: ' + resp.data.fileimage);
             vm.addProduct.fileimage = resp.data.fileimage;
             $http({
-                url: 'http://122.116.108.112:8888/api/addProduct',
+                url: config.myDomianName + '/api/addProduct',
                 method: "POST",
                 withCredentials: true,
                 params: "",
@@ -33,7 +32,7 @@ angular.module('hosen')
                 }
             }).success(function (response) {   
                $http({
-                    url: 'http://122.116.108.112:8888/api/getAllProducts',
+                    url: config.myDomianName + '/api/getAllProducts',
                     method: "GET",
                     withCredentials: true,
                     headers: {
@@ -41,6 +40,10 @@ angular.module('hosen')
                     }
                 }).success(function (response) {   
                     vm.allProducts = response;
+                    for(var i in vm.allProducts ){
+                        vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
+                        vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+                     }
                      vm.addProductMsg = "新增商品成功!!" ;
                 }).error(function(error) {
                   
@@ -52,22 +55,9 @@ angular.module('hosen')
             vm.addProductMsg = "新增商品失敗 : 上傳檔案不成功(" +  resp.status + ")!!"  ;
         }, function (evt) {
             file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            //console.log('progress: ' + file.progress + '% ' + evt.config.data.file.name);
         });
     };
     
-    /*
-    $scope.categoryChange =  function() {
-        console.log(' addProduct.category!  = ' + vm.updateProduct.category);
-        //""addProduct.category = ""
-    } ; 
-    
-    $scope.category = [ 
-      { name :'clothes'},
-      { name :'shoes'},
-      { name :'accessory'}
-    ];
-    */
   
     $scope.navbar = {
       title: "CxN Boutique",
@@ -90,11 +80,10 @@ angular.module('hosen')
     }, true);
     
     (function initController() {
-        //console.log('$rootScope.globals.currentUser' + $rootScope.globals.currentUser) ; 
         if( $rootScope.globals.currentUser !== undefined){
             if( $rootScope.globals.currentUser.username === 'admin' ){
                 $http({
-                        url: 'http://122.116.108.112:8888/api/getAllProducts',
+                        url: config.myDomianName + '/api/getAllProducts',
                         method: "GET",
                         withCredentials: true,
                         headers: {
@@ -102,6 +91,11 @@ angular.module('hosen')
                         }
                 }).success(function (response) {   
                     vm.allProducts = response;
+                    for(var i in vm.allProducts ){
+                        vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
+                        if(vm.allProducts[i].long_description != null)
+                          vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+                     }
                 }).error(function(error) {
                     
                 });
@@ -113,44 +107,10 @@ angular.module('hosen')
         }
            
     })();
-
-    $scope.signInOut = function() {
-       if(!vm.IsLogin){
-          $location.url('/signin');
-       }
-       else{
-          AuthenticationService.ClearCredentials();
-          $http({
-                url: 'http://122.116.108.112:8888/api/logout',
-                method: "POST",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-              console.log('response = ' + response) ;
-               //vm.clothesItems = response;
-          }).error(function(error) {
-              console.log('Error: ' + error);
-          });
-       }
-    };
-    
-    $scope.gotoRegister = function() {
-       $location.url('/register');
-    };
-     
-    $scope.gotoGroupBuying = function() {
-        if(vm.IsLogin){
-          $location.url('/groupbuying');
-        } else {
-          $location.url('/signin');
-        }
-    };
     
     $scope.getProducts = function() {
         $http({
-                url: 'http://122.116.108.112:8888/api/getAllProducts',
+                url: config.myDomianName + '/api/getAllProducts',
                 method: "GET",
                 withCredentials: true,
                 headers: {
@@ -158,21 +118,11 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                vm.allProducts = response;
-          }).error(function(error) {
-              
-          });
-    };
-    
-    $scope.getMembers = function() {
-       $http({
-                url: 'http://122.116.108.112:8888/api/getMembers',
-                method: "GET",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-               vm.members = response;
+               for(var i in vm.allProducts ){
+                  vm.allProducts[i].created_at  = new Date(vm.allProducts[i].created_at).toLocaleString();
+                  if(vm.allProducts[i].long_description != null)
+                    vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+               }
           }).error(function(error) {
               
           });
@@ -180,7 +130,7 @@ angular.module('hosen')
     
     $scope.getApplies = function() {
       $http({
-                url: 'http://122.116.108.112:8888/api/getApplies',
+                url: config.myDomianName + '/api/getApplies',
                 method: "GET",
                 withCredentials: true,
                 headers: {
@@ -188,6 +138,9 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                vm.applies = response;
+               for(var i in vm.applies ){
+                  vm.applies[i].note = vm.applies[i].note.replace(/\n/g,"<br />");
+               }
           }).error(function(error) {
               
           });
@@ -195,7 +148,7 @@ angular.module('hosen')
     
     $scope.getOrders = function() {
       $http({
-                url: 'http://122.116.108.112:8888/api/getOrders',
+                url: config.myDomianName + '/api/getOrders',
                 method: "GET",
                 withCredentials: true,
                 headers: {
@@ -203,15 +156,20 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                vm.orders = response;
+               for(var i in vm.orders ){
+                  vm.orders[i].created_at = new Date(vm.orders[i].created_at).toLocaleString();
+                  if(vm.orders[i].additional_note != null)
+                    vm.orders[i].additional_note = vm.orders[i].additional_note.replace(/\n/g,"<br />");
+               }
           }).error(function(error) {
-              
+              vm.orders = null;
           });
     };
     
     $scope.removeOrder = function(orderId) {
       $http({
                 
-                url: 'http://122.116.108.112:8888/api/removeOrder',
+                url: config.myDomianName + '/api/removeOrder',
                 method: "POST",
                 withCredentials: true,
                 params: { orderId: orderId },
@@ -220,7 +178,7 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                $http({
-                    url: 'http://122.116.108.112:8888/api/getOrders',
+                    url: config.myDomianName + '/api/getOrders',
                     method: "GET",
                     withCredentials: true,
                     headers: {
@@ -228,6 +186,11 @@ angular.module('hosen')
                     }
                 }).success(function (response) {   
                     vm.orders = response;
+                    for(var i in vm.orders ){
+                        vm.orders[i].created_at = new Date(vm.orders[i].created_at).toLocaleString();
+                        if(vm.orders[i].additional_note != null)
+                          vm.orders[i].additional_note = vm.orders[i].additional_note.replace(/\n/g,"<br />");
+                     }
                 }).error(function(error) {
                     
                 });
@@ -239,7 +202,7 @@ angular.module('hosen')
     $scope.removeProduct = function(productId) {
       $http({
                 
-                url: 'http://122.116.108.112:8888/api/removeProduct',
+                url: config.myDomianName + '/api/removeProduct',
                 method: "POST",
                 withCredentials: true,
                 params: { productId: productId },
@@ -248,7 +211,7 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                $http({
-                    url: 'http://122.116.108.112:8888/api/getAllProducts',
+                    url: config.myDomianName + '/api/getAllProducts',
                     method: "GET",
                     withCredentials: true,
                     headers: {
@@ -256,6 +219,11 @@ angular.module('hosen')
                     }
                 }).success(function (response) {   
                     vm.allProducts = response;
+                    for(var i in vm.allProducts ){
+                        vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
+                        if(vm.allProducts[i].long_description != null)
+                          vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+                     }
                 }).error(function(error) {
                     
                 });
@@ -263,11 +231,63 @@ angular.module('hosen')
               
           });
     };
+
+    $scope.updateProduct = function() {
+      $http({    
+                url: config.myDomianName + '/api/updateProduct',
+                method: "POST",
+                withCredentials: true,
+                params: "",
+                data :  vm.updateProduct,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+          }).success(function (response) {   
+               $http({
+                    url: config.myDomianName + '/api/getAllProducts',
+                    method: "GET",
+                    withCredentials: true,
+                    headers: {
+                                'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }).success(function (response) {   
+                    vm.allProducts = response;
+                    for(var i in vm.allProducts ){
+                        vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
+                        if(vm.allProducts[i].long_description != null)
+                          vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+                     }
+                    vm.updateProductMsg = "修改商品成功!!" ;
+                }).error(function(error) {
+                    
+                });
+          }).error(function(error) {
+               vm.updateProductMsg = "修改商品失敗!!" ;
+          });
+    };
     
+    $scope.getMembers = function() {
+       $http({
+                url: config.myDomianName + '/api/getMembers',
+                method: "GET",
+                withCredentials: true,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+          }).success(function (response) {   
+               vm.members = response;
+               for(var i in vm.members ){
+                  if(vm.members[i].note != null)
+                    vm.members[i].note = vm.members[i].note.replace(/\n/g,"<br />");
+               }
+          }).error(function(error) {
+              
+          });
+    };
+
     $scope.removeMember = function(memberId) {
       $http({
-                
-                url: 'http://122.116.108.112:8888/api/removeMember',
+                url: config.myDomianName + '/api/removeMember',
                 method: "POST",
                 withCredentials: true,
                 params: { memberId: memberId },
@@ -276,7 +296,7 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                $http({
-                    url: 'http://122.116.108.112:8888/api/getMembers',
+                    url: config.myDomianName + '/api/getMembers',
                     method: "GET",
                     withCredentials: true,
                     headers: {
@@ -284,6 +304,10 @@ angular.module('hosen')
                     }
                 }).success(function (response) {   
                     vm.members = response;
+                    for(var i in vm.members ){
+                      if(vm.members[i].note != null)
+                        vm.members[i].note = vm.members[i].note.replace(/\n/g,"<br />");
+                    }
                 }).error(function(error) {
                     
                 });
@@ -295,8 +319,7 @@ angular.module('hosen')
     
     $scope.approveMember = function(memberId) {
       $http({
-                
-                url: 'http://122.116.108.112:8888/api/approveMember',
+                url: config.myDomianName + '/api/approveMember',
                 method: "POST",
                 withCredentials: true,
                 params: { memberId: memberId },
@@ -305,7 +328,7 @@ angular.module('hosen')
                 }
           }).success(function (response) {   
                $http({
-                    url: 'http://122.116.108.112:8888/api/getApplies',
+                    url: config.myDomianName + '/api/getApplies',
                     method: "GET",
                     withCredentials: true,
                     headers: {
@@ -313,72 +336,15 @@ angular.module('hosen')
                     }
                 }).success(function (response) {   
                     vm.applies = response;
+                    for(var i in vm.applies ){
+                        if(vm.applies[i].note != null)
+                          vm.applies[i].note = vm.applies[i].note.replace(/\n/g,"<br />");
+                     }
                 }).error(function(error) {
                     
                 });
           }).error(function(error) {
               
-          });
-    };
-    
-   
-    
-    $scope.addProductDB = function() {
-           
-      $http({
-                url: 'http://122.116.108.112:8888/api/addProduct',
-                method: "POST",
-                withCredentials: true,
-                params: "",
-                data :  vm.addProduct,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-               $http({
-                    url: 'http://122.116.108.112:8888/api/getAllProducts',
-                    method: "GET",
-                    withCredentials: true,
-                    headers: {
-                                'Content-Type': 'application/json; charset=utf-8'
-                    }
-                }).success(function (response) {   
-                    vm.allProducts = response;
-                }).error(function(error) {
-                    
-                });
-          }).error(function(error) {
-              
-          });
-    };
-    
-    $scope.updateProduct = function() {
-      $http({
-                
-                url: 'http://122.116.108.112:8888/api/updateProduct',
-                method: "POST",
-                withCredentials: true,
-                params: "",
-                data :  vm.updateProduct,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-               $http({
-                    url: 'http://122.116.108.112:8888/api/getAllProducts',
-                    method: "GET",
-                    withCredentials: true,
-                    headers: {
-                                'Content-Type': 'application/json; charset=utf-8'
-                    }
-                }).success(function (response) {   
-                    vm.allProducts = response;
-                    vm.updateProductMsg = "修改商品成功!!" ;
-                }).error(function(error) {
-                    
-                });
-          }).error(function(error) {
-               vm.updateProductMsg = "修改商品失敗!!" ;
           });
     };
     

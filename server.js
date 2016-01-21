@@ -35,7 +35,7 @@ var upload = multer({
 	storage: storage
 	/*
 	dest: 'src/assets/images',
-	onFileUploadData: function (file, data, req, res) {
+	onFileUploadData: function (file/, data, req, res) {
 		
 	},
 	onFileUploadComplete: function (file, req, res) {
@@ -49,7 +49,8 @@ var upload = multer({
  }).single('file')
 
 var fs = require('fs');
- 
+var md5 = require('md5');
+
 app.all('*', function(req, res,next) {
 
     var responseSettings = {
@@ -86,15 +87,14 @@ app.post('/api/authenticate',function(request, response){
           return response.status(500).json({ success: false, data: err});
       }
 		var username =   request.query.username ;
-		var password =   Base64.decode(request.query.password) ;
-		
+		var password =   request.query.password ;
 		var results = [];
-		client.query("SELECT * FROM hosen WHERE username=($1)", [username], function(err, result) {
+		client.query("SELECT password FROM hosen WHERE username=($1)", [username], function(err, result) {
 			done();
 			if(err) {
 			  return response.status(500).json({ success: false, data: err});
 			}
-			if ( result.rows[0] !== undefined && result.rows[0].password === password ){ 
+			if ( result.rows[0] !== undefined && result.rows[0].password === md5(password) ){ 
 				request.session.user = username;
 				response.json({ success: true, auth : 'ok' }) ; 
 			}else{
@@ -107,7 +107,6 @@ app.post('/api/authenticate',function(request, response){
 });
 
 app.post('/api/purchaseProduct',function(request, response){ 
-	//console.log('purchaseProduct Authorization' + request.get('Authorization') ) ; 
 	if( request.get('Authorization') === undefined)
 		return response.status(403);
 	
@@ -121,13 +120,6 @@ app.post('/api/purchaseProduct',function(request, response){
 	
 	var created_at = new Date();
 	
-	/*
-	console.log('username = ' +  username) ;
-	console.log('purchaseProductName = ' +  purchaseProductName) ;
-	console.log('purchaseProductId = ' +  purchaseProductId) ;
-	console.log('additionalNote = ' +  additionalNote) ;
-	console.log('created_at = ' +  created_at) ;
-	*/
 	pg.connect(conString, function(err, client, done) {
 		if(err) {
 		  done();
@@ -212,28 +204,15 @@ app.post('/api/register',function(request, response){
 	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
 	
 	var username =   request.body.username ;
-	var password =   request.body.password ;
-	
+	var password = md5(Base64.encode(request.body.password)) ;
 	var realname =   request.body.realname ;
 	var gender =   request.body.gender ;
-	
 	var mobile =   request.body.mobile ;
 	var address =   request.body.address ;
 	var email =   request.body.email ;
 	var note =   request.body.note ;
-	
 	var created_at = new Date();
-	/*
-	console.log('username' +  username) ;
-	console.log('password' +  password) ;
-	console.log('realname' +  realname) ;
-	console.log('gender' +  gender) ;
-	console.log('mobile' +  mobile) ;
-	console.log('address' +  address) ;
-	console.log('email' +  email) ;
-	console.log('note' +  note) ;
-	*/
-	
+
 	pg.connect(conString, function(err, client, done) {
 		if(err) {
 		  done();
@@ -313,15 +292,13 @@ app.post('/api/removeProduct',function(request, response){
 	//console.log('deleteFileResult = ' + deleteFileResult) ;
 	//TODO : async delete file , should be fixed
 	pg.connect(conString, function(err, client, done) {
-
-	  if(err) {
-          done();
-          return response.status(500).json({ success: false, data: err});
-      }
+		if(err) {
+		  done();
+		  return response.status(500).json({ success: false, data: err});
+		}
 	
 		var results = [];
 
-		
 		client.query("DELETE FROM products WHERE id=($1)", [productId], function(err, result) {
 			done();
 			if(err) {
@@ -333,6 +310,16 @@ app.post('/api/removeProduct',function(request, response){
 		  });
 	});
 });
+
+function pad2(number, length) {
+   
+    var str = '' + number;
+    while (str.length < length) {
+        str = '0' + str;
+    }
+   
+    return str;
+}
 
 app.post('/api/addProduct',function(request, response){ 
 
@@ -350,7 +337,7 @@ app.post('/api/addProduct',function(request, response){
 	var long_description =   request.body.long_description ;
 	var icon =   request.body.fileimage ;
 	var created_at = new Date();
-	
+
 	pg.connect(conString, function(err, client, done) {
 		if(err) {
 		  done();
@@ -402,6 +389,7 @@ app.post('/api/updateProduct',function(request, response){
 	});
 });
 
+/*
 app.post('/api/createUser',function(request, response){ 
 
 	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
@@ -433,6 +421,7 @@ app.post('/api/createUser',function(request, response){
 		
 	});
 });
+*/
 
 app.get('/api/getMembers',function(request, response){ 
 	/*
@@ -442,14 +431,6 @@ app.get('/api/getMembers',function(request, response){
 
 	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
 		return response.status(403).json({ success: false, data: "adminOnly"});
-	 /*
-	var Cookies = {};
-	request.headers.cookie && request.headers.cookie.split(';').forEach(function( Cookie ) {
-        var parts = Cookie.split('=');
-        Cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
-    });
-	 console.log(Cookies);
-	 */
 	
     var pg = require('pg');
 	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
@@ -460,7 +441,7 @@ app.get('/api/getMembers',function(request, response){
 		  return response.status(500).json({ success: false, data: err});
 		}
 		var results = [];
-		client.query("SELECT * FROM hosen where type=1 ORDER BY id", function(err, result) {
+		client.query("SELECT id,username,realname,gender,email,address,mobile,note FROM hosen where type=1 ORDER BY id", function(err, result) {
 			done();
 			if(err) {
 			  return response.status(500).json({ success: false, data: err});
@@ -527,7 +508,6 @@ app.post('/api/removeMember',function(request, response){
 	});
 });
 
-
 app.get('/api/getApplies',function(request, response){ 
 
 	if( request.get('Authorization') !== 'Basic YWRtaW46bmluYTA3MTc=')
@@ -542,7 +522,7 @@ app.get('/api/getApplies',function(request, response){
 		  return response.status(500).json({ success: false, data: err});
 		}
 		var results = [];
-		client.query("SELECT * FROM hosen where type=2 ORDER BY id", function(err, result) {
+		client.query("SELECT id,username,realname,gender,email,address,mobile,note FROM hosen where type=2 ORDER BY id", function(err, result) {
 			done();
 			if(err) {
 			  return response.status(500).json({ success: false, data: err});
@@ -619,34 +599,26 @@ app.get('/api/productDetail',function(request, response){
 
 
 app.get('/api/getAccessoryProducts',function(request, response){
-	//if (request.session && request.session.user) {
-		
-		var pg = require('pg');
-		var conString = "postgres://nodejs:nodejs@localhost/nodejs";
-		pg.connect(conString, function(err, client, done) {
-			if(err) {
-			  done();
-			  return response.status(500).json({ success: false, data: err});
-			}
-			var results = [];
-			client.query("SELECT * FROM products where category='accessory' ORDER BY id", function(err, result) {
-				done();
+	var pg = require('pg');
+	var conString = "postgres://nodejs:nodejs@localhost/nodejs";
+	pg.connect(conString, function(err, client, done) {
+		if(err) {
+		  done();
+		  return response.status(500).json({ success: false, data: err});
+		}
+		var results = [];
+		client.query("SELECT * FROM products where category='accessory' ORDER BY id", function(err, result) {
+			done();
 
-				if(err) {
-				  return response.status(500).json({ success: false, data: err});
-				}				
-				return response.json(result.rows);
-			  });
-		});
-	//} else {
-		//return response.status(403).json({ success: false, data: '403'});
-	//}
+			if(err) {
+			  return response.status(500).json({ success: false, data: err});
+			}				
+			return response.json(result.rows);
+		  });
+	});
 });
 
 app.get('/api/groupBuying',function(request, response){
-	
-	
-	
 	if (request.session && request.session.user) {
 		var pg = require('pg');
 		var conString = "postgres://nodejs:nodejs@localhost/nodejs";
@@ -817,6 +789,7 @@ var Base64 = {
             return output;
         }
 };
+
 	
 server.listen(8888,"0.0.0.0",function(){
 //server.listen(8888,"122.116.108.112",function(){

@@ -31,46 +31,7 @@ angular.module('hosen')
                $scope.navbar.IsLogin = false;
             }
     }, true); 
-    
-    $scope.signInOut = function() {
-       if(!vm.IsLogin){
-          $location.url('/signin');
-       }
-       else{
-          AuthenticationService.ClearCredentials();
-          $http({
-                //url: 'http://cxn.com.tw:8888/api/logout',
-                url: 'http://122.116.108.112:8888/api/logout',
-                method: "POST",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-              console.log('response = ' + response) ;
-               //vm.clothesItems = response;
-          }).error(function(error) {
-              console.log('Error: ' + error);
-          });
-       }
-    };
-    
-    $scope.gotoRegister = function() {
-       $location.url('/register');
-    };
-    
-    
-    $scope.gotoGroupBuying = function() {
-        if(vm.IsLogin){
-          $location.url('/groupbuying');
-        } else {
-          setTimeout(function() {
-            $window.alert('請先登入!');
-          });
-          $location.url('/signin');
-        }
-    };
-    
+
     
   }]);
 })();

@@ -8,8 +8,8 @@
  * Controller of the hosen
  */
 angular.module('hosen')
-  .controller('peripheralCtrl', ['$scope','$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService' , '$window',
-  function ($scope, $rootScope , $location, $anchorScroll, $http, AuthenticationService, $window) {
+  .controller('peripheralCtrl', ['$scope','$rootScope', '$location', '$anchorScroll', '$http', 'AuthenticationService' , '$window', 'config',
+  function ($scope, $rootScope , $location, $anchorScroll, $http, AuthenticationService, $window, config) {
     
     $scope.navbar = {
       title: "CxN Boutique",
@@ -40,7 +40,7 @@ angular.module('hosen')
     $scope.purchaseProduct = function(file) {
         vm.purchaseProduct.username = vm.username;
         $http({
-            url: 'http://122.116.108.112:8888/api/purchaseProduct',
+            url: config.myDomianName + '/api/purchaseProduct',
             method: "POST",
             withCredentials: true,
             params: "",
@@ -54,45 +54,6 @@ angular.module('hosen')
                 vm.addProductMsg = "訂購商品失敗!!" ;
         });
     };
-    
-    $scope.signInOut = function() {
-       if(!vm.IsLogin){
-          $location.url('/signin');
-       }
-       else{
-          AuthenticationService.ClearCredentials();
-          $http({
-                //url: 'http://cxn.com.tw:8888/api/logout',
-                url: 'http://122.116.108.112:8888/api/logout',
-                method: "POST",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-              console.log('response = ' + response) ;
-               //vm.clothesItems = response;
-          }).error(function(error) {
-              console.log('Error: ' + error);
-          });
-       }
-    };
-    
-    $scope.gotoRegister = function() {
-       $location.url('/register');
-    };
-    
-    
-    $scope.gotoGroupBuying = function() {
-        if(vm.IsLogin){
-          $location.url('/groupbuying');
-        } else {
-          setTimeout(function() {
-            $window.alert('請先登入!');
-          });
-          $location.url('/signin');
-        }
-    };
 
     $scope.setCategory = function(value) {
  
@@ -102,36 +63,32 @@ angular.module('hosen')
         vm.IsAccessory = false;
         
         $http({
-                //url: 'http://cxn.com.tw:8888/api/getClothesProducts',
-                url: 'http://122.116.108.112:8888/api/getClothesProducts',
-                
+                url: config.myDomianName + '/api/getClothesProducts',
                 method: "GET",
                 withCredentials: true,
                 headers: {
                             'Content-Type': 'application/json; charset=utf-8'
                 }
           }).success(function (response) {   
-              
                vm.clothesItems = response;
+               for(var i in vm.clothesItems ){
+                  vm.clothesItems[i].long_description = vm.clothesItems[i].long_description.replace(/\n/g,"<br />");
+               }
           }).error(function(error) {
               
           });
-          
       }else if(value === 'shoes'){
          vm.IsClothes = false;
          vm.IsShoes = true;
          vm.IsAccessory = false;
-         
          $http({
-                //url: 'http://cxn.com.tw:8888/api/getShoesProducts',
-                url: 'http://122.116.108.112:8888/api/getShoesProducts',
+                url: config.myDomianName + '/api/getShoesProducts',
                 method: "GET",
                 withCredentials: true,
                 headers: {
                             'Content-Type': 'application/json; charset=utf-8'
                 }
           }).success(function (response) {   
-              
                vm.shoesItems = response;
           }).error(function(error) {
               
@@ -142,10 +99,8 @@ angular.module('hosen')
          vm.IsShoes = false;
          vm.IsAccessory = true;
 
-         
          $http({
-                //url: 'http://cxn.com.tw:8888/api/getAccessoryProducts',
-                url: 'http://122.116.108.112:8888/api/getAccessoryProducts',
+                url: config.myDomianName + '/api/getAccessoryProducts',
                 method: "GET",
                 withCredentials: true,
                 headers: {
@@ -170,14 +125,13 @@ angular.module('hosen')
        vm.enlargeImageUrlPic = url.slice(0, url.indexOf(','));
        
        //vm.enlargeImageUrlPics = url;
-       
        vm.name = name;
        vm.long_description = long_description;
        //$rootScope.imageId_reviewNum = $rootScope.imageId + 1 ;
        picIndex = 0 ;
         
        $http({
-                url: 'http://122.116.108.112:8888/api/itemReview',
+                url: config.myDomianName + '/api/itemReview',
                 method: "POST",
                 withCredentials: true,
                 headers: {
@@ -187,33 +141,11 @@ angular.module('hosen')
                   'id' : id
             }
         }).success(function (response) {   
-              //vm.accessoryItems = response;
+              
         }).error(function(error) {
             
         });
     };
-    
-    /*
-    $scope.redirectProduct = function(id) {
-        //$location.url('http://122.116.108.112:8888/api/productDetail?id=1');
-        //$location.hash('/id');
-        $http({
-                url: 'http://122.116.108.112:8888/api/productDetail',
-                method: "GET",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8',
-                },
-                params: {
-                  'id' : id
-            }
-        }).success(function (response) {   
-              //$location.url('/id');
-        }).error(function(error) {
-            
-        });
-    };
-    */
     
     $scope.changeModalPic = function() {
       //console.log('click!');

@@ -4,8 +4,8 @@
         .module('hosen')
         .factory('AuthenticationService', AuthenticationService);
  
-    AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout'];
-    function AuthenticationService($http, $cookieStore, $rootScope, $timeout) {
+    AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout' , 'config'];
+    function AuthenticationService($http, $cookieStore, $rootScope, $timeout , config) {
         var service = {};
  
         service.Login = Login;
@@ -16,7 +16,7 @@
  
         function Login(account, password, callback) {
             $http({
-                    url: 'http://122.116.108.112:8888/api/authenticate',
+                    url: config.myDomianName + '/api/authenticate',
                     method: "POST",
                     params: { username: account, password: Base64.encode(password) },
                     withCredentials: true,

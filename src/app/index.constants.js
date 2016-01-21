@@ -6,6 +6,9 @@
     .module('hosen')
     .constant('malarkey', malarkey)
     .constant('toastr', toastr)
-    .constant('moment', moment);
+    .constant('moment', moment)
+    .constant('config', {
+        myDomianName: 'http://122.116.108.112:8888'
+    });
 
 })();

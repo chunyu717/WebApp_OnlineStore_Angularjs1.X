@@ -13,11 +13,14 @@
   }
   */
   
-  run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
-    function run($rootScope, $location, $cookieStore, $http) {
+  run.$inject = ['$rootScope', '$location', '$cookieStore', '$http' , 'config'];
+    function run($rootScope, $location, $cookieStore, $http, config) {
         
         // keep user logged in after page refresh
+
         $rootScope.globals = $cookieStore.get('globals') || {};
+
+        //console.log('config.myDomianName  = ' +  config.myDomianName) ;
         //console.log('$rootScope.globals  = ' +  $rootScope.globals) ;
         //console.log('$rootScope.globals.currentUser  = ' +  $rootScope.globals.currentUser) ;
         if ($rootScope.globals.currentUser) {

@@ -53,31 +53,6 @@ angular.module('hosen')
         });
     }; 
     
-    $scope.signInOut = function() {
-       if(!vm.IsLogin){
-          $location.url('/signin');
-       }
-       else{
-          AuthenticationService.ClearCredentials();
-          $http({
-                url: 'http://122.116.108.112:8888/api/logout',
-                method: "POST",
-                withCredentials: true,
-                headers: {
-                            'Content-Type': 'application/json; charset=utf-8'
-                }
-          }).success(function (response) {   
-              
-          }).error(function(error) {
-              
-          });
-       }
-    };
- 
-    $scope.register = function() {
-       $location.url('/register');
-    };
-    
      $scope.setCaptchaSuccess = function () {
        console.log('setCaptchaSuccess!');
        vm.captchaSuccess = true; 

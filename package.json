@@ -5,6 +5,7 @@
     "angular-recaptcha": "^2.2.5",
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
+    "md5": "^2.0.0",
     "multer": "^1.1.0"
   },
   "scripts": {
