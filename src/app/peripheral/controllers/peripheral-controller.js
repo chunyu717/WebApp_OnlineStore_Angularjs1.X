@@ -38,13 +38,13 @@ angular.module('hosen')
     }, true); 
 
     $scope.purchaseProduct = function(file) {
-        vm.purchaseProduct.username = vm.username;
+        //$scope.purchaseProduction.username = vm.username;
         $http({
             url: config.myDomianName + '/api/purchaseProduct',
             method: "POST",
             withCredentials: true,
             params: "",
-            data :  vm.purchaseProduct,
+            data :  $scope.purchaseProduction,
             headers: {
                         'Content-Type': 'application/json; charset=utf-8'
             }
@@ -117,19 +117,38 @@ angular.module('hosen')
        
     };
     
+     $scope.modalShown = false;
     var picIndex = 0;
     vm.imageUrl = '';
     vm.enlargeImageUrlPics = [] ; 
-    $scope.enlargeImageUrl = function(url, id, long_description, name) {
-       vm.imageUrl = url;
-       vm.enlargeImageUrlPic = url.slice(0, url.indexOf(','));
-       
-       //vm.enlargeImageUrlPics = url;
-       vm.name = name;
-       vm.long_description = long_description;
-       //$rootScope.imageId_reviewNum = $rootScope.imageId + 1 ;
+
+    $scope.loggedIn = false;
+    $scope.loggingIn = false;
+
+    $scope.showLogin = function () {
+        $scope.loggingIn = true;
+    };
+
+    $scope.logout = function () {
+        // do your logout logic
+        $scope.user = null;
+        $scope.loggedIn = false;
+    };
+
+    $scope.login = function () {
+        // do your login logic
+        $scope.loggingIn = false;
+        $scope.loggedIn = true;
+    };
+
+
+    //$scope.enlargeImageUrl = function(url, id, long_description, name) {
+    $scope.enlargeImageUrl = function(item) {
+       vm.imageUrl = item.icon;
        picIndex = 0 ;
-        
+       
+       $scope.enlargeImage  = item ; 
+
        $http({
                 url: config.myDomianName + '/api/itemReview',
                 method: "POST",
@@ -138,21 +157,54 @@ angular.module('hosen')
                             'Content-Type': 'application/json; charset=utf-8',
                 },
                 params: {
-                  'id' : id
+                  'id' : item.id
             }
         }).success(function (response) {   
               
         }).error(function(error) {
             
         });
+         
+        $("#image-gallery").modal('show');
     };
     
+    $scope.modalHide = function() {
+        $("#image-gallery").modal('hide');
+    }
+
+
     $scope.changeModalPic = function() {
-      //console.log('click!');
        var vStr = vm.imageUrl.split(',');
-       vm.enlargeImageUrlPic = vStr[(picIndex + 1)% vStr.length] ; 
+       $scope.enlargeImageUrlPic = vStr[(picIndex + 1)% vStr.length] ; 
        picIndex = picIndex + 1;    
     };
-    
-  }]);
+
+    $scope.orderModalHide = function() {
+        $("#purchaseProduct").modal('hide');
+    }
+
+    $scope.buyProduct = function(item) {
+        $scope.purchaseProduction = item ;
+        $scope.purchaseProduction.username = vm.username;
+        //$scope.purchaseProduct.id = item.id;
+        //$scope.purchaseProduct = vm.purchaseProduct;
+         $("#purchaseProduct").modal('show');
+    }
+
+  }])
+.directive('igProduct', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'modal.html'   
+    }
+  })
+  .directive('igOrder', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'order.html' 
+    }
+  });
+
 })();

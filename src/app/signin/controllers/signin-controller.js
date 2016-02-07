@@ -54,12 +54,10 @@ angular.module('hosen')
     }; 
     
      $scope.setCaptchaSuccess = function () {
-       console.log('setCaptchaSuccess!');
        vm.captchaSuccess = true; 
    };  
    
    $scope.resetCaptcha = function () {
-       console.log('resetCaptcha!');
        vm.captchaSuccess = false;    
    }; 
     
@@ -69,7 +67,7 @@ angular.module('hosen')
         } else {
           setTimeout(function() {
             $window.alert('請先登入!');
-          });
+          } );
           $location.url('/signin');
         }
     };

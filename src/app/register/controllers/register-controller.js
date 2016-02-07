@@ -24,7 +24,7 @@ angular.module('hosen')
     };
 
     (function initController() {
-        console.log('config.myDomianName  = ' +  config.myDomianName) ;
+        //console.log('config.myDomianName  = ' +  config.myDomianName) ;
     })();
 
     $rootScope.$watch('globals', function(newVal, oldVal) {

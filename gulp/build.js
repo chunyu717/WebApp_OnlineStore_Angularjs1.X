@@ -98,7 +98,6 @@ gulp.task('clean', function (done) {
 var concat = require("gulp-concat");
 gulp.task('minify-js', function () {
   gulp.src([
-    /*
     "bower_components/angular/angular.min.js",
     "bower_components/jquery/dist/jquery.min.js",
     "bower_components/bootstrap/dist/js/bootstrap.min.js",
@@ -107,15 +106,6 @@ gulp.task('minify-js', function () {
     'bower_components/angular-touch/angular-touch.js',
     'bower_components/angular-sanitize/angular-sanitize.js',
     'bower_components/angular-resource/angular-resource.js'
-        <script src="bower_components/angular/angular.min.js"></script>
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-        <script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>
-        <script src="bower_components/angular-touch/angular-touch.js"></script>
-        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <script src="bower_components/angular-resource/angular-resource.js"></script>  
-    */
 		])
    .pipe(concat('bundle.js'))
 	.pipe(gulp.dest('dist/assets'))

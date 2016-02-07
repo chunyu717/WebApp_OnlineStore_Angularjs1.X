@@ -13,7 +13,7 @@
     
     <link href="assets/bundle.css" rel="stylesheet" type="text/css" />
     <script src="assets/bundle.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <!-- <script src="bower_components/angular-touch/angular-touch.js"></script> -->
      
 </head>
     <div navbar></div>
@@ -38,9 +38,7 @@
                 <div class="row">
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.clothesItems">
                         <div class="thumbnail" >
-                            <!-- <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:500px;height:400px" ng-click="redirectProduct('{{item.id}}')" > -->
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" href="#image-gallery" data-toggle="modal" data-target="#image-gallery" 
-                            ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}', '{{item.name}}' )">  
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" ng-click="enlargeImageUrl(item)">
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>
@@ -51,7 +49,7 @@
                                 <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
                                 </p>
                                 <p>
-                                    <button class="btn btn-primary btn-lg" type="submit" data-toggle="modal" data-target="#purchaseProduct" ng-click="peripheral.purchaseProduct.purchaseProductName = item.name; peripheral.purchaseProduct.purchaseProductId = item.id" ng-disabled="!peripheral.IsLogin">馬上購買</button>
+                                    <button class="btn btn-primary btn-lg" type="submit" ng-click="buyProduct(item)" ng-disabled="!peripheral.IsLogin">馬上購買</button>
                                 </p>
                             </div>
                         </div>
@@ -65,7 +63,7 @@
                 <div class="row"  >
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.shoesItems">
                         <div class="thumbnail" >
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" ng-click="enlargeImageUrl(item)">
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>
@@ -76,7 +74,7 @@
                                 <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
                                 </p>
                                 <p>
-                                    <button class="btn btn-primary btn-lg" type="submit" data-toggle="modal" data-target="#purchaseProduct" ng-click="peripheral.purchaseProduct.purchaseProductName = item.name; peripheral.purchaseProduct.purchaseProductId = item.id" ng-disabled="!peripheral.IsLogin">馬上購買</button>
+                                    <button class="btn btn-primary btn-lg" type="submit" ng-click="buyProduct(item)" ng-disabled="!peripheral.IsLogin">馬上購買</button>
                                 </p>
                             </div>
                         </div>
@@ -90,7 +88,7 @@
                 <div class="row"  >
                     <div class="col-sm-4 col-lg-4 col-md-4 col-centered" ng-repeat="item in peripheral.accessoryItems">
                         <div class="thumbnail" >
-                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" alt="" href="#" data-toggle="modal" data-target="#image-gallery" ng-click="enlargeImageUrl('{{item.icon}}', '{{item.id}}', '{{item.long_description}}' ,'{{item.name}}' )">
+                            <img ng-src="assets/images/{{ item.icon.slice(0, item.icon.indexOf(',')); }}" style="width:100%; height:300px" ng-click="enlargeImageUrl(item)">
                             <div class="caption">
                                 <h4 class="pull-right">${{ item.pricing }}</h4>
                                 <h4><a href="#">{{ item.name }}</a></h4>
@@ -101,9 +99,8 @@
                                 <h2 class="pull-right">{{ item.rating_count }} Reviews</h2>
                                 </p>
                                 <p>
-                                    <button class="btn btn-primary btn-lg" type="submit" data-toggle="modal" data-target="#purchaseProduct" ng-click="peripheral.purchaseProduct.purchaseProductName = item.name; peripheral.purchaseProduct.purchaseProductId = item.id" ng-disabled="!peripheral.IsLogin">馬上購買</button>
-                                </p>
-                                
+                                    <button class="btn btn-primary btn-lg" type="submit" ng-click="buyProduct(item)" ng-disabled="!peripheral.IsLogin">馬上購買</button>
+                                </p>    
                             </div>
                         </div>
                     </div>
@@ -112,66 +109,10 @@
            <!-- /.IsAccessory -->
         </div>  <!-- /.row -->
     </div> <!-- /.container -->
-
-    <div class="modal" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" >
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="image-gallery-title">{{ peripheral.name }}</h4>
-                </div>
-                <div class="modal-body">
-                     <img id="image-gallery-image" alt="" class="img-responsive" src="assets/images/{{peripheral.enlargeImageUrlPic}}" ng-click="changeModalPic()" >
-                     <img id="image-gallery-image" alt="" class="img-responsive" src="assets/images/{{peripheral.enlargeImageUrlPic}}" ng-click="changeModalPic()" >
-                     <img id="image-gallery-image" alt="" class="img-responsive" src="assets/images/{{peripheral.enlargeImageUrlPic}}" ng-click="changeModalPic()" >
-                </div>
-                <div class="modal-footer">
-                    <div class="text-justify" id="image-gallery-caption">
-                        <p ng-bind-html="peripheral.long_description"></p>
-                    </div>  
-                </div>
-            </div>
-        </div>
-    </div>
     
-    <div class="modal" id="purchaseProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" >
-            <div class="modal-content" >
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="purchaseProduct-title">購買商品</h4>
-                </div>
-                <div class="modal-body">
-                     <form name="myForm" id="myForm" role="form" ng-submit="purchaseProduct()">
-                        <label for="userName">
-                                        會員帳號: {{peripheral.username}}
-                        </label> 
-                        <br>
-                        <label for="pricing">
-                                        購買產品: {{peripheral.purchaseProduct.purchaseProductName}}
-                        </label> 
-                        <br>
-                        <label for="pricing">
-                                        產品代號 : {{peripheral.purchaseProduct.purchaseProductId}}
-                        </label>
-                        <br>
-                        <label for="note">
-                                        說明:
-                        </label>
-                        <br>
-                        <textarea rows="2" cols="30" name="note" form="myForm" id="note" ng-model="peripheral.purchaseProduct.addtionNote" novalidate> </textarea>
-                        <br>
-                        
-                        <button type="submit">確定購買</button>
-                        <p >{{peripheral.purchaseProductMsg}}</p>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
+    <ig-product></ig-product>
+    <ig-order></ig-order>
+   
     <div class="container-fluid ">
         <hr>
         <footer>

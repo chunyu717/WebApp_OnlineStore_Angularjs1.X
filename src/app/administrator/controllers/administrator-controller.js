@@ -14,6 +14,7 @@ angular.module('hosen')
     
     var vm = this;
     
+
     $scope.addProduct = function(file) {
         file.upload = Upload.upload({
             url: config.myDomianName + '/api/photo/upload',
@@ -44,10 +45,11 @@ angular.module('hosen')
                         vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
                         vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
                      }
-                     vm.addProductMsg = "新增商品成功!!" ;
+                    
                 }).error(function(error) {
                   
                 });
+                 vm.addProductMsg = "新增商品成功!!" ;
           }).error(function(error) {
                  vm.addProductMsg = "新增商品失敗：更新資料庫不成功!!" ;
           });
@@ -57,6 +59,52 @@ angular.module('hosen')
             file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
         });
     };
+    /*
+    $scope.addProduct = function(file) {
+        file.upload = Upload.upload({
+            url: config.myDomianName + '/api/photo/upload',
+            withCredentials: true,
+            data: {file: file, username: $scope.username},
+        }).then(function (resp) {
+            vm.addProduct.fileimage = resp.data.fileimage;
+            $http({
+                url: config.myDomianName + '/api/addProduct',
+                method: "POST",
+                withCredentials: true,
+                params: "",
+                data :  vm.addProduct,
+                headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                }
+            }).success(function (response) {   
+               $http({
+                    url: config.myDomianName + '/api/getAllProducts',
+                    method: "GET",
+                    withCredentials: true,
+                    headers: {
+                                'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }).success(function (response) {   
+                    vm.allProducts = response;
+                    for(var i in vm.allProducts ){
+                        vm.allProducts[i].created_at = new Date(vm.allProducts[i].created_at).toLocaleString();
+                        vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
+                     }
+                    
+                }).error(function(error) {
+                  
+                });
+                 vm.addProductMsg = "新增商品成功!!" ;
+          }).error(function(error) {
+                 vm.addProductMsg = "新增商品失敗：更新資料庫不成功!!" ;
+          });
+        }, function (resp) {
+            vm.addProductMsg = "新增商品失敗 : 上傳檔案不成功(" +  resp.status + ")!!"  ;
+        }, function (evt) {
+            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+        });
+    };
+    */
     
   
     $scope.navbar = {
@@ -120,7 +168,7 @@ angular.module('hosen')
                vm.allProducts = response;
                for(var i in vm.allProducts ){
                   vm.allProducts[i].created_at  = new Date(vm.allProducts[i].created_at).toLocaleString();
-                  if(vm.allProducts[i].long_description != null)
+                  if(vm.allProducts[i].long_description !== null)
                     vm.allProducts[i].long_description = vm.allProducts[i].long_description.replace(/\n/g,"<br />");
                }
           }).error(function(error) {

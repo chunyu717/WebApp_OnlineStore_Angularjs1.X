@@ -1,0 +1,37 @@
+<div class="modal" id="purchaseProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="orderModalHide()"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="purchaseProduct-title">購買商品</h4>
+                </div>
+                <div class="modal-body">
+                     <form name="myForm" id="myForm" role="form" ng-submit="purchaseProduct()">
+                        <label for="userName">
+                                        會員帳號: {{purchaseProduction.username}}
+                        </label> 
+                        <br>
+                        <label for="pricing">
+                                        購買產品: {{purchaseProduction.name}}
+                        </label> 
+                        <br>
+                        <label for="pricing">
+                                        產品代號 : {{purchaseProduction.id}}
+                        </label>
+                        <br>
+                        <label for="note">
+                                        說明:
+                        </label>
+                        <br>
+                        <textarea rows="2" cols="30" name="note" form="myForm" id="note" ng-model="purchaseProduction.addtionNote" novalidate> </textarea>
+                        <br>
+                        
+                        <button type="submit">確定購買</button>
+                        <p >{{purchaseProductMsg}}</p>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>

@@ -85,7 +85,8 @@
         <li><a data-toggle="tab" href="#menu1" ng-click="getMembers()">會員管理</a></li>
         <li><a data-toggle="tab" href="#menu2" ng-click="getApplies()">待批準會員申請</a></li>
         <li><a data-toggle="tab" href="#menu3" ng-click="getOrders()">訂單</a></li>
-        <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.picFile.progress = 0 ; administrator.addProductFinalMsg = null ; administrator.addProduct = null; administrator.addProduct.category = 'clothes' ;administrator.picFile= null"/>
+        <input type="button" value="新增商品" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" ng-click="administrator.picFile1.progress = 0 ; administrator.addProductFinalMsg = null ; administrator.addProduct = null; administrator.addProduct.category = 'clothes' ;administrator.picFile1 = null ;
+        administrator.picFile1 = null ;"/>
     </ul>
 
     <div class="tab-content">
@@ -223,11 +224,11 @@
         <div class="modal-dialog modal-sm" >
             <div class="modal-content" >
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="addProduct-title">新增商品</h4>
                 </div>
                 <div class="modal-body">
-                     <form name="myForm" id="myForm" role="form" autocomplete="off" ng-submit="addProduct(administrator.picFile)" >
+                     <form name="myForm" id="myForm" role="form" autocomplete="off" ng-submit="addProduct(administrator.picFile1) " >
                         <label for="userName">
                                         商品名稱　:
                         </label> 
@@ -262,19 +263,13 @@
                         <textarea rows="4" cols="30" name="long_description" id="long_description" ng-model="administrator.addProduct.long_description" novalidate> </textarea>
                         <br>
                         
-                        <input type="file" ngf-select ng-model="administrator.picFile" name="file" accept="image/*" ngf-max-size="2MB" required ='required' ngf-model-invalid="administrator.errorFiles">
-                        <!--
+                        <input type="file" ngf-select ng-model="administrator.picFile1" name="file" accept="image/*" ngf-max-size="10MB" required ='required' ngf-model-invalid="administrator.errorFiles">
+                        
                         <span class="progress" ng-show="administrator.picFile.progress > 0">
-                                <div style="width:{{administrator.picFile.progress}}%" ng-bind="administrator.picFile.progress + '%'"/>
+                                <div style="width:{{administrator.picFile.progress}}%" ng-bind="administrator.picFile1.progress + '%'"/>
                         </span>
                         
-
-                        <input type="file" ngf-select ng-model="administrator.picFile[1]" name="file2" accept="image/*" ngf-max-size="2MB" ngf-model-invalid="administrator.errorFiles[1]">
-                        <span ng-show="administrator.addProductMsg[1]">Upload2 Successful</span> 
-
-                        <input type="file" ngf-select ng-model="administrator.picFile[2]" name="file3" accept="image/*" ngf-max-size="2MB" ngf-model-invalid="administrator.errorFiles[2]">
-                        <span ng-show="administrator.addProductMsg[2]">Upload3 Successful</span> 
-                        -->
+                        
                         <!-- <i ng-show="myForm.file.$error.required">*required</i><br> 
                         <i ng-show="myForm.file.$error.maxSize">File too large {{errorFiles[0].size / 1000000|number:1}}MB: max 2M</i>
                         -->
@@ -284,12 +279,12 @@
                             <button ng-click="administrator.picFile = null" ng-show="administrator.picFile">Remove</button>
                         </div>
                         <br>
+                         
+                        <span ng-show="administrator.picFile1.result">Upload Successful</span> 
                         -->
-                        <!--
-                        <span ng-show="administrator.picFile.result">Upload Successful</span> 
                         <span class="err" ng-show="errorMsg">{{administrator.errorMsg}}</span>
                         <br>
-                        -->
+                        
                         <button type="submit">新增商品</button>
                         <p>{{administrator.addProductFinalMsg}}</p>
                     </form>
