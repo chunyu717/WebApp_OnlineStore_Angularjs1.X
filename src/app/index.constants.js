@@ -8,7 +8,7 @@
     .constant('toastr', toastr)
     .constant('moment', moment)
     .constant('config', {
-        myDomianName: 'http://122.116.108.112:8888'
+        myDomianName: 'http://122.116.108.112:3000'
     });
 
 })();
