@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 var multer  = require('multer'); 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/assets/images')
+        cb(null, 'dist/assets/images')
     },
     filename: function (req, file, cb) {
 		var ext = require('path').extname(file.originalname);
@@ -261,7 +261,7 @@ function deleteFile(productId, callback) {
 		client.query("SELECT * FROM products WHERE id=($1)", [productId], function(err, result) {
 			done();
 			if ( result.rows[0] !== undefined && result.rows[0].icon !== null ){ 
-				fs.unlink('src/assets/images/' + result.rows[0].icon.trim(), (err) => {
+				fs.unlink('dist/assets/images/' + result.rows[0].icon.trim(), (err) => {
 				  if (err){
 					  console.log('err = ' + err);
 					  return false;

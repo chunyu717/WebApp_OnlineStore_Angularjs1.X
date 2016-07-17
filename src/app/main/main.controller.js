@@ -139,6 +139,9 @@
               }
             };
 
+	    $scope.gotoMain = function() {
+              $location.url('/');
+            }
             $scope.gotoGroupBuying = function() {
               if($scope.navbar.IsLogin){
                 $location.url('/groupbuying');
