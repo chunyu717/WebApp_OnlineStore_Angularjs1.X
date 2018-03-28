@@ -8,7 +8,7 @@
     .constant('toastr', toastr)
     .constant('moment', moment)
     .constant('config', {
-        myDomianName: 'http://122.116.214.159'
+        myDomianName: 'http://localhost:8888'
     });
 
 })();
