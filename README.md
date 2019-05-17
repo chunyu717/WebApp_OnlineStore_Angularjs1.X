@@ -29,26 +29,16 @@ browse http://<<Your Domain>:8888/#/
 ```
 # Quick Overview
 ### `Home`
-<p align='center'>
-<img src='https://s3.hicloud.net.tw/jerry/dontouch/public/cxn/index.jpg' width='600' alt='npm start'>
-</p>
+![image](https://github.com/kingbike/CxN/blob/master/index.jpg)
 
 ### `Product`
-<p align='center'>
-<img src='https://s3.hicloud.net.tw/jerry/dontouch/public/cxn/product.jpg' width='600' alt='npm start'>
-</p>
+![image](https://github.com/kingbike/CxN/blob/master/product.jpg)
 
 ### `login`
-<p align='center'>
-<img src='https://s3.hicloud.net.tw/jerry/dontouch/public/cxn/login.jpg' width='600' alt='npm start'>
-</p>
+![image](https://github.com/kingbike/CxN/blob/master/login.jpg)
 
 ### `register`
-<p align='center'>
-<img src='https://s3.hicloud.net.tw/jerry/dontouch/public/cxn/register.jpg' width='600' alt='npm start'>
-</p>
+![image](https://github.com/kingbike/CxN/blob/master/register.jpg)
 
 ### `administrator`
-<p align='center'>
-<img src='https://s3.hicloud.net.tw/jerry/dontouch/public/cxn/administrator.jpg' width='600' alt='npm start'>
-</p>
+![image](https://github.com/kingbike/CxN/blob/master/administrator.jpg)
